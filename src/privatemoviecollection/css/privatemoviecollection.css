@@ -1,1 +1,34 @@
 
+.button{
+    -fx-background-color: #bbbbb3;
+    -fx-border-color: white;
+    -fx-background-radius: 25,25,25,25;
+    -fx-border-radius: 25,25,25,25;
+    -fx-border-width: 2 2 2 2;
+}
+
+.table-view .column-header .label{
+    -fx-alignment:CENTER_LEFT;
+    -fx-text-fill: white;
+    -fx-font: 16px "Arial";
+    -fx-font-weight: bold;
+}
+
+
+
+.table-view .column-header{
+    -fx-background-color: #717a7d;
+    -fx-border-color: white;
+    -fx-border-width: 0 1 1 0;
+}
+
+.table-row-cell{
+     -fx-background-color: #0f1419;
+     -fx-focus-color: transparent;
+     
+}
+
+.table-view{
+    -fx-background-color: #0e1e31;
+    
+}

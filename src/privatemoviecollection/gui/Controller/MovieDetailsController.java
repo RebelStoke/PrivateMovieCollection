@@ -7,30 +7,21 @@ package privatemoviecollection.gui.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 
 /**
  * FXML Controller class
  *
  * @author Revy
  */
-public class MainWindowController implements Initializable {
-
-    @FXML
-    private Button add;
-    @FXML
-    private Button delete;
-    @FXML
-    private Button edit;
+public class MovieDetailsController implements Initializable {
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+        // TODO
     }    
     
 }

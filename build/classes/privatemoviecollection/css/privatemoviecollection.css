@@ -1,1 +1,7 @@
 
+.button1{
+-fx-background-color: #171717;
+-fx-border-color: white;
+-fx-background-radius: 25,25,25,25;
+-fx-border-radius: 25,25,25,25;
+}
