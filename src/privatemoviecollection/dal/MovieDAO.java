@@ -64,7 +64,8 @@ public class MovieDAO {
         int ArraySize = listMovies.size();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("DELETE FROM Movies");
+            String del = "DELETE FROM Movies";
+            statement.execute(del);
             for (int i = 0; i < ArraySize; i++) {
                 Movie actualMovie = listMovies.get(i);
                 String sql = "INSERT INTO Movies VALUES(?,?,?,?,?)";
