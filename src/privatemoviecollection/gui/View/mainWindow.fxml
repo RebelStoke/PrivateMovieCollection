@@ -30,7 +30,7 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="add" layoutX="43.0" layoutY="21.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="68.0" text="Add">
+                  <Button fx:id="add" layoutX="43.0" layoutY="21.0" mnemonicParsing="false" onAction="#addMovieMethod" prefHeight="42.0" prefWidth="68.0" text="Add">
                      <font>
                         <Font name="Trebuchet MS" size="18.0" />
                      </font>
