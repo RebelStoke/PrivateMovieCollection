@@ -2,6 +2,7 @@ package privatemoviecollection.gui.Model;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
@@ -38,6 +39,10 @@ public class PMCModel
     public void addMovie(String name, float rating, String path, float personalPath)
     {
         logicFacade.addMovie(name, rating, path, personalPath);
+    }
+    
+    public List getMovies(){
+   return  logicFacade.getMovies();
     }
     
     public void removeMovie(Movie movie)

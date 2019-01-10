@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import privatemoviecollection.be.Movie;
@@ -55,9 +56,12 @@ public class AddMovieController implements Initializable {
     private void clickToPickFile(ActionEvent event) {
         FileDialog fd = new FileDialog(new JFrame());
         fd.setVisible(true);
+        if(fd.getFile()!=null){
         File[] f = fd.getFiles();
         String filePath = fd.getFiles()[0].getPath();
         pathField.setText(filePath);
+        }
+        else System.out.println("file not chosen");
         }
 
     @FXML
@@ -68,7 +72,8 @@ public class AddMovieController implements Initializable {
         float personalRating = Float.valueOf(personalField.getText());
         System.out.println(name+" " +rating+" " + path+" " + personalRating);
         model.addMovie(name, rating, path, personalRating);
-        
+       ((Node) (event.getSource())).getScene().getWindow().hide();
+
         
     }
     

@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import privatemoviecollection.be.Movie;
@@ -42,21 +46,28 @@ public class MainWindowController implements Initializable {
     @FXML
     private TableView<Movie> tableOfMovies;
 
+    private ObservableList moviesAsObservable;
+    @FXML
+    private TableColumn<Movie, String> titleCol;
+    @FXML
+    private TableColumn<Movie, String> categoryCol;
+    @FXML
+    private TableColumn<Movie, Float> ratingCol;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database! \n Do you want to Delete the movies now?", ButtonType.YES, ButtonType.NO);
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.YES)
-            {
-                
-            } else if (alert.getResult() == ButtonType.NO)
-            {
-                
-            }
-            model = PMCModel.getInstance();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database! \n Do you want to Delete the movies now?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+
+        } else if (alert.getResult() == ButtonType.NO) {
+
+        }
+        model = PMCModel.getInstance();
 //        try
 //        {
 //            String name = "";
@@ -65,12 +76,36 @@ public class MainWindowController implements Initializable {
 //        {
 //            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-    }    
+        moviesAsObservable = FXCollections.observableArrayList();
+        setSongsTable();
     
-      public void openSongWindow() // opens up SongWindow and sets the connection
+
+   
+    }
+
+    public void setSongsTable() // This method gets all songs from database and loeads it into tableSongs
     {
-        try
-        {
+        moviesAsObservable = FXCollections.observableArrayList(model.getMovies());
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        System.out.println(titleCol);
+        categoryCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        System.out.println(categoryCol);
+        ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        System.out.println(ratingCol);
+
+        tableOfMovies.getColumns().clear();
+        tableOfMovies.setItems(moviesAsObservable);
+        tableOfMovies.getColumns().addAll(titleCol, categoryCol, ratingCol);
+//        artistCol.getStyleClass().add("my-special-table-style");
+//        titleCol.getStyleClass().add("my-special-table-style");
+//        categoryCol.getStyleClass().add("my-special-table-style");
+//        timeCol.getStyleClass().add("my-special-table-style-time");
+//        timeCol.getStyleClass().add("time-col");
+    }
+
+    public void openSongWindow() // opens up SongWindow and sets the connection
+    {
+        try {
             Parent root1;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
             root1 = (Parent) fxmlLoader.load();
@@ -78,8 +113,7 @@ public class MainWindowController implements Initializable {
             stage.setScene(new Scene(root1));
             stage.centerOnScreen();
             stage.show();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -95,7 +129,7 @@ public class MainWindowController implements Initializable {
     private void exitButtonMethod(ActionEvent event) {
         model.saveMoviesInDatabase();
         System.exit(1);
-        
+
     }
 
     @FXML
@@ -103,18 +137,16 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void deleteMovieMethod(ActionEvent event)
-    {
+    private void deleteMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
     }
 
     @FXML
-    private void editMovieMethod(ActionEvent event)
-    {
+    private void editMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.setSelectedMovie(m);
         openSongWindow();
     }
-    
+
 }

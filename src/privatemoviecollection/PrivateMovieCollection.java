@@ -20,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import privatemoviecollection.dal.MovieDAO;
 
 /**
  *
@@ -65,6 +66,8 @@ public class PrivateMovieCollection extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
+        
     }
     
 }

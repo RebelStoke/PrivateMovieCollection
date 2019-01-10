@@ -27,4 +27,6 @@ public interface PMCLogicFacade
     public void removePersonalRating(Movie movie);
     
     public void saveMoviesInDatabase();
+    
+    public List getMovies();
 }
