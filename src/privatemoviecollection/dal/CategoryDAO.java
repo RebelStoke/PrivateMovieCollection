@@ -32,7 +32,7 @@ public class CategoryDAO
         listCategories.remove(category);
     }
 
-    public List<Category> getAllCategories() throws SQLException
+    public List<Category> getAllCategoriesFromDatabase() throws SQLException
     {
         List<Category> categories = new ArrayList<>();
         try (Connection con = cp.getConnection())
@@ -50,7 +50,7 @@ public class CategoryDAO
         return categories;
     }
     
-    public void saveMovies() throws SQLException {
+    public void saveCategoriesInDatabase() throws SQLException {
         int ArraySize = listCategories.size();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();

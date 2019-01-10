@@ -41,7 +41,7 @@ public class MovieDAO {
         return listMovies.get(ArraySize).getId()+1;
     }
 
-    public List getAllMovies() throws SQLException {
+    public List getAllMoviesFromDatabase() throws SQLException {
         
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -60,7 +60,7 @@ public class MovieDAO {
        return listMovies;
     }
 
-    public void saveMovies() throws SQLException {
+    public void saveMoviesInDatabase() throws SQLException {
         int ArraySize = listMovies.size();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();

@@ -21,8 +21,8 @@ public final class PMCManager implements PMCLogicFacade
     {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
-        setMovies(mdao.getAllMovies());
-        setCategories(cdao.getAllCategories());
+        setMovies(mdao.getAllMoviesFromDatabase());
+        setCategories(cdao.getAllCategoriesFromDatabase());
     }
     
     @Override
@@ -48,6 +48,15 @@ public final class PMCManager implements PMCLogicFacade
             Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    @Override
+    public List getAllMoviesFromDatabase(){
+        try {
+            mdao.getAllMoviesFromDatabase();
+        } catch (SQLException ex) {
+            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     @Override
     public void addCategory(Category category)
@@ -59,6 +68,16 @@ public final class PMCManager implements PMCLogicFacade
     public void removeCategory(Category category)
     {
         categories.remove(category);
+    }
+    
+    @Override
+    public List getAllCategoriesFromDatabase(){
+        try {
+            cdao.getAllCategoriesFromDatabase();
+        } catch (SQLException ex) {
+            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override
