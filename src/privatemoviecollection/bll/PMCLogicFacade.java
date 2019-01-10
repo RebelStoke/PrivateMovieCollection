@@ -25,4 +25,6 @@ public interface PMCLogicFacade
     public void addPersonalRating(float personalRating, Movie movie);
     
     public void removePersonalRating(Movie movie);
+    
+    public void saveMoviesInDatabase();
 }

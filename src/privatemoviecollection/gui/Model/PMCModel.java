@@ -73,4 +73,9 @@ public class PMCModel
     {
         logicFacade.removePersonalRating(movie);
     }
+    
+    public void saveMoviesInDatabase()
+    {
+        logicFacade.saveMoviesInDatabase();
+    }
 }

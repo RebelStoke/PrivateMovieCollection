@@ -34,7 +34,7 @@ public class CategoryDAO
 
     public List<Category> getAllCategoriesFromDatabase() throws SQLException
     {
-        List<Category> categories = new ArrayList<>();
+      
         try (Connection con = cp.getConnection())
         {
             Statement statement = con.createStatement();
@@ -44,10 +44,10 @@ public class CategoryDAO
                 String name = rs.getString("name");
                 int id = rs.getInt("id");
                 Category category = new Category(id,name);
-                categories.add(category);
+                listCategories.add(category);
             }
         }
-        return categories;
+        return listCategories;
     }
     
     public void saveCategoriesInDatabase() throws SQLException {

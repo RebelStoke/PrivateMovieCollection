@@ -135,4 +135,14 @@ public final class PMCManager implements PMCLogicFacade
         this.categories = categories;
     }
     
+    @Override
+    public void saveMoviesInDatabase()
+    {
+        try {
+            mdao.saveMoviesInDatabase();
+        } catch (SQLException ex) {
+            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

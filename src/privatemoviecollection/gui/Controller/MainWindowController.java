@@ -84,5 +84,16 @@ public class MainWindowController implements Initializable {
     private void addMovieMethod(ActionEvent event) {
         openSongWindow();
     }
+
+    @FXML
+    private void exitButtonMethod(ActionEvent event) {
+        model.saveMoviesInDatabase();
+        System.exit(1);
+        
+    }
+
+    @FXML
+    private void minimizeButtonMethod(ActionEvent event) {
+    }
     
 }
