@@ -19,8 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.PMCModel;
 
 /**
@@ -37,6 +39,8 @@ public class MainWindowController implements Initializable {
     @FXML
     private Button edit;
     private PMCModel model;
+    @FXML
+    private TableView<Movie> tableOfMovies;
 
     /**
      * Initializes the controller class.
@@ -82,6 +86,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void addMovieMethod(ActionEvent event) {
+        Movie m = null;
+        model.setSelectedMovie(m);
         openSongWindow();
     }
 
@@ -94,6 +100,21 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void minimizeButtonMethod(ActionEvent event) {
+    }
+
+    @FXML
+    private void deleteMovieMethod(ActionEvent event)
+    {
+        Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
+        model.removeMovie(m);
+    }
+
+    @FXML
+    private void editMovieMethod(ActionEvent event)
+    {
+        Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
+        model.setSelectedMovie(m);
+        openSongWindow();
     }
     
 }

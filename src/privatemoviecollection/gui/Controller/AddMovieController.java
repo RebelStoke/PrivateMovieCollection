@@ -33,6 +33,7 @@ public class AddMovieController implements Initializable {
     @FXML
     private TextField personalField;
     private PMCModel model;
+    private Movie selectedMovie;
 
     /**
      * Initializes the controller class.
@@ -40,6 +41,14 @@ public class AddMovieController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       model = PMCModel.getInstance();
+      if (model.getSelectedMovie() != null)
+      {
+          selectedMovie = model.getSelectedMovie();
+          nameField.setText(selectedMovie.getName());
+          ratingField.setText(String.valueOf(selectedMovie.getRating()));
+          pathField.setText(selectedMovie.getFilelink());
+          personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
+      }
     }    
 
     @FXML

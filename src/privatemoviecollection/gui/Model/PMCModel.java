@@ -13,6 +13,7 @@ public class PMCModel
 {
     private final PMCLogicFacade logicFacade;
     public static PMCModel instance;
+    private Movie movie;
     
     public static PMCModel getInstance() 
     {
@@ -77,5 +78,15 @@ public class PMCModel
     public void saveMoviesInDatabase()
     {
         logicFacade.saveMoviesInDatabase();
+    }
+    
+    public void setSelectedMovie(Movie movie)
+    {
+        this.movie = movie;
+    }
+    
+    public Movie getSelectedMovie()
+    {
+        return movie;
     }
 }
