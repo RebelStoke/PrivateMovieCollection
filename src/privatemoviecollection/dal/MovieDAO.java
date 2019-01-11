@@ -21,12 +21,12 @@ import privatemoviecollection.be.Movie;
 public class MovieDAO {
 
     List<Movie> listMovies;
-    List<CatMovie> categoriesOfMovie;
+ //   List<CatMovie> categoriesOfMovie;
     private final ConnectionProvider cp;
     private final CategoryDAO cdao;
     public MovieDAO() throws IOException {
         listMovies = new ArrayList<>();
-        categoriesOfMovie = new ArrayList<>();
+ //       categoriesOfMovie = new ArrayList<>();
         cp = new ConnectionProvider();
         cdao = new CategoryDAO();
     }
@@ -71,7 +71,7 @@ public class MovieDAO {
         }
        return listMovies;
     }
-    
+    /*
     public List getAllMovieCategoriesFromDatabse() throws SQLServerException, SQLException{
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -86,7 +86,7 @@ public class MovieDAO {
         }
        return categoriesOfMovie;
     }
-
+*/
     public void saveMoviesInDatabase() throws SQLException {
         int ArraySize = listMovies.size();
         try (Connection con = cp.getConnection()) {

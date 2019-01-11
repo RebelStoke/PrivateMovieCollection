@@ -24,7 +24,7 @@ public final class PMCManager implements PMCLogicFacade {
         cdao = new CategoryDAO();
         setMovies(mdao.getAllMoviesFromDatabase());
         setCategories(cdao.getAllCategoriesFromDatabase());
-        setCategoriesOfMovie(mdao.getAllMovieCategoriesFromDatabse());
+     //   setCategoriesOfMovie(mdao.getAllMovieCategoriesFromDatabse());
     }
 
     @Override
