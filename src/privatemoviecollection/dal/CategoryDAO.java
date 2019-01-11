@@ -1,5 +1,7 @@
 package privatemoviecollection.dal;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,7 +70,24 @@ public class CategoryDAO
     }
     
     
-    
+    public List getCategoryByID(int id) throws SQLServerException, SQLException{
+        List<Category> listCategories = new ArrayList<>();
+        try (Connection con = cp.getConnection()) {
+            Statement statement = con.createStatement();
+            String sql = "SELECT Movies.name,rating,personalrating,filelink,lastview,CatMovies.id AS CatMovieID, CatMovies.CategoryID, CatMovies.MovieID,Categories.name AS CategoryName FROM Movies INNER JOIN CatMovies ON Movies.id=CatMovies.MovieID INNER JOIN Categories ON CategoryID=Categories.id WHERE Movies.id=?";       
+            PreparedStatement ppst = con.prepareStatement(sql);
+            ppst.setInt(1, id);
+            ResultSet rs = ppst.executeQuery();
+            while (rs.next())
+            {
+               int categoryID =  rs.getInt("CategoryID");
+               String categoryName = rs.getString("CategoryName"); 
+               Category cat = new Category(categoryID, categoryName);
+               listCategories.add(cat);
+            }
+        }
+        return listCategories;
+    }
     
     
     

@@ -36,9 +36,9 @@ public class PMCModel
         logicFacade = new PMCManager();
     }
     
-    public void addMovie(String name, float rating, String path, float personalPath)
+    public void addMovie(String name, float rating, String path, float personalPath,int id)
     {
-        logicFacade.addMovie(name, rating, path, personalPath);
+        logicFacade.addMovie(name, rating, path, personalPath, id);
     }
     
     public List getMovies(){
@@ -93,5 +93,9 @@ public class PMCModel
     public Movie getSelectedMovie()
     {
         return movie;
+    }
+    
+    public int getHighestIDofMovies(){
+    return logicFacade.getHighestIDofMovies();
     }
 }

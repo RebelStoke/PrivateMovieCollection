@@ -28,8 +28,8 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public void addMovie(String name, float rating, String path, float personalPath) {
-        Movie movie = new Movie(name, rating, personalPath, path);
+    public void addMovie(String name, float rating, String path, float personalPath, int id) {
+        Movie movie = new Movie(name, rating, personalPath, path,id);
         try {
             mdao.addMovie(movie);
         } catch (SQLException ex) {
@@ -128,6 +128,10 @@ public final class PMCManager implements PMCLogicFacade {
         } catch (SQLException ex) {
             Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    @Override
+    public int getHighestIDofMovies(){
+    return mdao.getHighestIDofMovies();
     }
 
     public void setCategoriesOfMovie(List<CatMovie> categoriesOfMovie) {

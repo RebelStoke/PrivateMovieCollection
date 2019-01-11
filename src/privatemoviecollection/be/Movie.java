@@ -13,13 +13,13 @@ public class Movie
     private int id;
     private ObservableList<Category> categories = FXCollections.observableArrayList();
     
-    public Movie(String name, float rating, float personalrating, String filelink)
+    public Movie(String name, float rating, float personalrating, String filelink,int id)
     {
         this.name = name;
         this.rating = rating;
         this.personalrating = personalrating;
         this.filelink = filelink;
-       // this.id = id;
+        this.id = id;
     }
 
     public String getName()

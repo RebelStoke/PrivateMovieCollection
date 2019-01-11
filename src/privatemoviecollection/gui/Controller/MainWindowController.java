@@ -87,11 +87,11 @@ public class MainWindowController implements Initializable {
     {
         moviesAsObservable = FXCollections.observableArrayList(model.getMovies());
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        System.out.println(titleCol);
+        //System.out.println(titleCol);
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        System.out.println(categoryCol);
+        //System.out.println(categoryCol);
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        System.out.println(ratingCol);
+        //System.out.println(ratingCol);
 
         tableOfMovies.getColumns().clear();
         tableOfMovies.setItems(moviesAsObservable);

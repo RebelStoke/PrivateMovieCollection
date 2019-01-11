@@ -6,7 +6,7 @@ import privatemoviecollection.be.Movie;
 
 public interface PMCLogicFacade
 {
-    public void addMovie(String name, float rating, String path, float personalPath);
+    public void addMovie(String name, float rating, String path, float personalPath, int id);
     
     public void removeMovie(Movie movie);
     
@@ -29,4 +29,6 @@ public interface PMCLogicFacade
     public void saveMoviesInDatabase();
     
     public List getMovies();
+    
+    public int getHighestIDofMovies();
 }

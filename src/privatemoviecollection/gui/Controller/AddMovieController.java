@@ -71,7 +71,8 @@ public class AddMovieController implements Initializable {
         String path = pathField.getText();
         float personalRating = Float.valueOf(personalField.getText());
         System.out.println(name+" " +rating+" " + path+" " + personalRating);
-        model.addMovie(name, rating, path, personalRating);
+        int id = model.getHighestIDofMovies();
+        model.addMovie(name, rating, path, personalRating, id);
        ((Node) (event.getSource())).getScene().getWindow().hide();
 
         
