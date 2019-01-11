@@ -35,13 +35,14 @@ public class AddMovieController implements Initializable {
     private TextField personalField;
     private PMCModel model;
     private Movie selectedMovie;
-
+    private MainWindowController mwController;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       model = PMCModel.getInstance();
+      mwController = new MainWindowController();
       if (model.getSelectedMovie() != null)
       {
           selectedMovie = model.getSelectedMovie();

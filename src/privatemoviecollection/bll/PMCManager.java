@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import privatemoviecollection.be.CatMovie;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.dal.CategoryDAO;
@@ -17,14 +16,13 @@ public final class PMCManager implements PMCLogicFacade {
     private final CategoryDAO cdao;
     private List<Movie> movies;
     private List<Category> categories;
-    private List<CatMovie> categoriesOfMovie;
 
     public PMCManager() throws IOException, SQLException {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
         setMovies(mdao.getAllMoviesFromDatabase());
         setCategories(cdao.getAllCategoriesFromDatabase());
-     //   setCategoriesOfMovie(mdao.getAllMovieCategoriesFromDatabse());
+
     }
 
     @Override
@@ -134,8 +132,5 @@ public final class PMCManager implements PMCLogicFacade {
     return mdao.getHighestIDofMovies();
     }
 
-    public void setCategoriesOfMovie(List<CatMovie> categoriesOfMovie) {
-        this.categoriesOfMovie = categoriesOfMovie;
-    }
 
 }

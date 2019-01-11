@@ -54,7 +54,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<Movie, String> categoryCol;
     @FXML
     private TableColumn<Movie, Float> ratingCol;
-
+    
+    
     /**
      * Initializes the controller class.
      */
