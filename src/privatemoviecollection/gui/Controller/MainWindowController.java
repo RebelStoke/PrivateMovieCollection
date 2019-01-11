@@ -24,7 +24,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import privatemoviecollection.be.Movie;
@@ -97,6 +96,11 @@ public class MainWindowController implements Initializable {
         tableOfMovies.getColumns().clear();
         tableOfMovies.setItems(moviesAsObservable);
         tableOfMovies.getColumns().addAll(titleCol, categoryCol, ratingCol);
+//        artistCol.getStyleClass().add("my-special-table-style");
+//        titleCol.getStyleClass().add("my-special-table-style");
+//        categoryCol.getStyleClass().add("my-special-table-style");
+//        timeCol.getStyleClass().add("my-special-table-style-time");
+//        timeCol.getStyleClass().add("time-col");
     }
 
     public void openSongWindow() // opens up SongWindow and sets the connection
@@ -143,23 +147,6 @@ public class MainWindowController implements Initializable {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.setSelectedMovie(m);
         openSongWindow();
-    }
-
-    @FXML
-    private void playMedia(MouseEvent event) {
-        try {
-            Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
-            Parent root2;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
-            root2 = (Parent) fxmlLoader.load();
-            fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root2));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }
