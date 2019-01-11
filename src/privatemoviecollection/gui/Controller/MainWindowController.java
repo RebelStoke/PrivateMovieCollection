@@ -27,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.PMCModel;
 
@@ -148,7 +149,32 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void playMedia(MouseEvent event) {
-        try {
+       play();
+    }
+
+    @FXML
+    private void doubleClick(MouseEvent event) throws IOException {
+        if (event.getClickCount() == 2&&tableOfMovies.getSelectionModel().getSelectedItem()!=null){
+            Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
+            ObservableList<Category> categories = movie.getCategories();
+            String title = movie.getName();
+            String rating = Float.toString(movie.getRating());
+            Parent root3;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/movieDetails.fxml"));
+            root3 = (Parent) fxmlLoader.load();
+            fxmlLoader.<MovieDetailsController>getController().setController(this);
+            fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root3));
+            stage.centerOnScreen();
+            stage.show();
+        
+        }
+        
+    }
+    public void play(){
+    
+    try {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
             Parent root2;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
@@ -161,6 +187,7 @@ public class MainWindowController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    
+    
     }
-
 }

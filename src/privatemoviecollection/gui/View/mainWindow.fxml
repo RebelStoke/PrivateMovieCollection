@@ -15,7 +15,7 @@
          <children>
             <AnchorPane prefHeight="506.0" prefWidth="966.0">
                <children>
-                  <TableView fx:id="tableOfMovies" layoutX="67.0" layoutY="65.0" prefHeight="390.0" prefWidth="770.0" style="-fx-border-color: white;">
+                  <TableView fx:id="tableOfMovies" layoutX="67.0" layoutY="65.0" onMouseClicked="#doubleClick" prefHeight="390.0" prefWidth="770.0" style="-fx-border-color: white;">
                     <columns>
                       <TableColumn fx:id="titleCol" prefWidth="505.0" text="Title" />
                       <TableColumn fx:id="categoryCol" prefWidth="150.0" text="Category" />
