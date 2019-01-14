@@ -21,11 +21,11 @@ public class MovieDAO {
 
     List<Movie> listMovies;
     private final ConnectionProvider cp;
-    private final CategoryDAO cdao;
+    private CategoryDAO cdao;
     public MovieDAO() throws IOException {
         listMovies = new ArrayList<>();
         cp = new ConnectionProvider();
-        cdao = new CategoryDAO();
+        cdao = cdao.getInstance();
     }
 
     public Movie addMovie(Movie movie) throws SQLException {
@@ -46,7 +46,7 @@ public class MovieDAO {
         return listMovies.get(ArraySize-1).getId()+1;
     }
 
-    public List getAllMoviesFromDatabase() throws SQLException {
+    public void getAllMoviesFromDatabase() throws SQLException {
         List<Category> listCategories = new ArrayList<>();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -65,7 +65,12 @@ public class MovieDAO {
                 listMovies.add(movie);
             }
         }
-       return listMovies;
+    }
+    
+    public List<Movie> getMovies(){
+    
+        return listMovies;
+        
     }
 
     public void saveMoviesInDatabase() throws SQLException {

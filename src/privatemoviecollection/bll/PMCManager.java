@@ -13,15 +13,18 @@ import privatemoviecollection.dal.MovieDAO;
 public final class PMCManager implements PMCLogicFacade {
 
     private final MovieDAO mdao;
-    private final CategoryDAO cdao;
+    private CategoryDAO cdao;
     private List<Movie> movies;
     private List<Category> categories;
 
     public PMCManager() throws IOException, SQLException {
         mdao = new MovieDAO();
-        cdao = new CategoryDAO();
-        setMovies(mdao.getAllMoviesFromDatabase());
-        setCategories(cdao.getAllCategoriesFromDatabase());
+        cdao = cdao.getInstance();
+        cdao.getAllCategoriesFromDatabase();
+        setCategories(cdao.getCategories());
+        mdao.getAllMoviesFromDatabase();
+        setMovies(mdao.getMovies());
+        
 
     }
 

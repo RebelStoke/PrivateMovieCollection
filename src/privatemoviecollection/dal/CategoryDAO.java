@@ -10,19 +10,36 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 
+
+
 public class CategoryDAO
-{
+{  
     List<Category> listCategories;
     private final ConnectionProvider cp;
+    private static CategoryDAO instance;
     
     public CategoryDAO() throws IOException
     {
         cp = new ConnectionProvider();
         listCategories = new ArrayList<>();
     }
+    
+    public static CategoryDAO getInstance() throws IOException 
+    {
+        if (instance == null)
+        {
+            
+                instance = new CategoryDAO();
+            
+        }
+        return instance;
+    }
+      
        public Category addCategory(Category category) throws SQLException
     {
         listCategories.add(category);
@@ -34,7 +51,7 @@ public class CategoryDAO
         listCategories.remove(category);
     }
 
-    public List<Category> getAllCategoriesFromDatabase() throws SQLException
+    public void getAllCategoriesFromDatabase() throws SQLException
     {
       
         try (Connection con = cp.getConnection())
@@ -49,6 +66,10 @@ public class CategoryDAO
                 listCategories.add(category);
             }
         }
+        System.out.println(listCategories.size());
+    }
+    
+    public List<Category> getCategories(){
         return listCategories;
     }
     
@@ -71,23 +92,29 @@ public class CategoryDAO
     
     
     public List getCategoryByID(int id) throws SQLServerException, SQLException{
-        List<Category> listCategories = new ArrayList<>();
+        List<Category> categories = new ArrayList<>();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
             String sql = "SELECT Movies.name,rating,personalrating,filelink,lastview,CatMovies.id AS CatMovieID, CatMovies.CategoryID, CatMovies.MovieID,Categories.name AS CategoryName FROM Movies INNER JOIN CatMovies ON Movies.id=CatMovies.MovieID INNER JOIN Categories ON CategoryID=Categories.id WHERE Movies.id=?";       
             PreparedStatement ppst = con.prepareStatement(sql);
             ppst.setInt(1, id);
             ResultSet rs = ppst.executeQuery();
+            
             while (rs.next())
             {
-               int categoryID =  rs.getInt("CategoryID");
-               String categoryName = rs.getString("CategoryName"); 
-               Category cat = new Category(categoryID, categoryName);
-               listCategories.add(cat);
+                System.out.println("1");
+               String categoryName = rs.getString("CategoryName");
+                System.out.println(categoryName);
+                for(int i = 0; i<listCategories.size(); i++){
+                    if(categoryName.equals(listCategories.get(i).getName()))
+                       categories.add(listCategories.get(i));
+                }
+                }
             }
-        }
-        return listCategories;
+        
+        return categories;
     }
+    
     
     
     
