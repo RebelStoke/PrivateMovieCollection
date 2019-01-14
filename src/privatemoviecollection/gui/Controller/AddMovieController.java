@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
+import org.controlsfx.control.CheckComboBox;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.PMCModel;
 
@@ -36,6 +37,8 @@ public class AddMovieController implements Initializable {
     private PMCModel model;
     private Movie selectedMovie;
     private MainWindowController mwController;
+    @FXML
+    private CheckComboBox<?> categoryBox;
     /**
      * Initializes the controller class.
      */
