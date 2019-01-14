@@ -74,9 +74,15 @@ public class AddMovieController implements Initializable {
         System.out.println(name+" " +rating+" " + path+" " + personalRating);
         int id = model.getHighestIDofMovies();
         model.addMovie(name, rating, path, personalRating, id);
+        mwController.setSongsTable();
        ((Node) (event.getSource())).getScene().getWindow().hide();
 
         
+    }
+    
+    public void setController(MainWindowController controller) 
+    {
+        this.mwController = controller;
     }
     
     

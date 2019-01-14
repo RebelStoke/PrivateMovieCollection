@@ -56,10 +56,10 @@ public class CategoryDAO
         int ArraySize = listCategories.size();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("DELETE FROM Movies");
+            ResultSet rs = statement.executeQuery("DELETE FROM Categories");
             for (int i = 0; i < ArraySize; i++) {
                 Category actualCategory = listCategories.get(i);
-                String sql = "INSERT INTO Movies VALUES(?,?,?,?,?)";
+                String sql = "INSERT INTO Movies VALUES(?,?)";
                 PreparedStatement ppst = con.prepareStatement(sql);
                 ppst.setInt(1, actualCategory.getId());
                 ppst.setString(2, actualCategory.getName());

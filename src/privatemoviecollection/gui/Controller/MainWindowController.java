@@ -105,6 +105,7 @@ public class MainWindowController implements Initializable {
             Parent root1;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
             root1 = (Parent) fxmlLoader.load();
+            fxmlLoader.<AddMovieController>getController().setController(this);
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
             stage.centerOnScreen();
@@ -136,6 +137,7 @@ public class MainWindowController implements Initializable {
     private void deleteMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
+        setSongsTable();
     }
 
     @FXML
