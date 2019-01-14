@@ -86,7 +86,6 @@ public class Movie
     {
         this.categories.add(category);
         this.categoriesAsString += category.getName()+"|";
-        System.out.println(categoriesAsString);
     }
     public String getCategoriesAsString(){
         return categoriesAsString;
