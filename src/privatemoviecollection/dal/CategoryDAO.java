@@ -101,10 +101,8 @@ public class CategoryDAO
             ResultSet rs = ppst.executeQuery();
             
             while (rs.next())
-            {
-                System.out.println("1");
+            {  
                String categoryName = rs.getString("CategoryName");
-                System.out.println(categoryName);
                 for(int i = 0; i<listCategories.size(); i++){
                     if(categoryName.equals(listCategories.get(i).getName()))
                        categories.add(listCategories.get(i));
