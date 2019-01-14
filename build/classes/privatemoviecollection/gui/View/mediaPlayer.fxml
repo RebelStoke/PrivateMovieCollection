@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.media.MediaView?>
 
-<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="912.0" style="-fx-background-color: #0e1e31;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="privatemoviecollection.gui.Controller.MediaPlayerController">
+<AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="912.0" style="-fx-background-color: #0e1e31;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="privatemoviecollection.gui.Controller.MediaPlayerController">
    <children>
       <MediaView fx:id="mediaView" fitHeight="512.0" fitWidth="912.0" />
-      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="368.0" layoutY="537.0">
+      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="368.0" layoutY="537.0" onMouseClicked="#playButton">
          <image>
             <Image url="@../../assets/play-button-black.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="455.0" layoutY="537.0">
+      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="455.0" layoutY="537.0" onMouseClicked="#pauseButton">
          <image>
             <Image url="@../../assets/pause-button-black.png" />
          </image>

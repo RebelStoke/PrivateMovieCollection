@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -45,7 +47,6 @@ private void setMusicPlayer()
         mediaPlayer = new MediaPlayer(hit);
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
-        
         mediaPlayer.play();
        
     }
@@ -59,6 +60,16 @@ void setController(MainWindowController controller, Movie movie){
     private void exitButton(ActionEvent event) {
         mediaPlayer.stop();
         
+    }
+
+    @FXML
+    private void playButton(MouseEvent event) {
+        mediaPlayer.play();
+    }
+
+    @FXML
+    private void pauseButton(MouseEvent event) {
+        mediaPlayer.pause();
     }
     
 }
