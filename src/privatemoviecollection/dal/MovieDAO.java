@@ -70,6 +70,7 @@ public class MovieDAO {
 
     public void saveMoviesInDatabase() throws SQLException {
         int ArraySize = listMovies.size();
+        int actualMovieIDinDB=-1;
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
             String delCatMovies = "DELETE FROM CatMovies";
@@ -78,7 +79,6 @@ public class MovieDAO {
             statement.execute(delMovies);
             for (int i = 0; i < ArraySize; i++) {
                 Movie actualMovie = listMovies.get(i); 
-                System.out.println(actualMovie.getId());
                 String sql = "INSERT INTO Movies VALUES(?,?,?,?,?)";
                 PreparedStatement ppst = con.prepareStatement(sql);
                 ppst.setString(1, actualMovie.getName());
@@ -88,6 +88,15 @@ public class MovieDAO {
                 ppst.setInt(5, actualMovie.getLastview());
                 ppst.execute();
                 
+                String sql3 = "SELECT * FROM Movies WHERE name=?";
+                PreparedStatement ppst3 = con.prepareStatement(sql3);
+                ppst3.setString(1, actualMovie.getName());
+                ResultSet rs = ppst3.executeQuery();
+                while (rs.next()) {
+               actualMovieIDinDB=rs.getInt("id");
+            }
+                System.out.println(actualMovieIDinDB);
+                
                 int categoriesCount = actualMovie.getCategories().size();
                 for(int j=0; j<categoriesCount; j++){
                 ObservableList ob = actualMovie.getCategories();
@@ -96,7 +105,7 @@ public class MovieDAO {
                 String sql2 = "INSERT INTO CatMovies VALUES(?,?)";
                 PreparedStatement ppst2 = con.prepareStatement(sql2);
                 ppst2.setInt(1, catID);
-                ppst2.setInt(2, actualMovie.getId()+1);
+                ppst2.setInt(2, actualMovieIDinDB);
                 ppst2.execute();
                 }
             }
