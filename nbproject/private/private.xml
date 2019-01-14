@@ -6,8 +6,10 @@
             <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/dal/MovieDAO.java</file>
             <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/be/Movie.java</file>
             <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/be/Category.java</file>
+            <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/dal/CategoryDAO.java</file>
             <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/gui/Controller/MainWindowController.java</file>
             <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/gui/Controller/MovieDetailsController.java</file>
+            <file>file:/C:/Users/Revy/Documents/NetBeansProjects/PrivateMovieCollection/src/privatemoviecollection/gui/Controller/AddMovieController.java</file>
         </group>
     </open-files>
 </project-private>
