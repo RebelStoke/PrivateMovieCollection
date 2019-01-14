@@ -10,3 +10,4 @@ build/built-jar.properties
 dist/PrivateMovieCollection.jnlp
 dist/PrivateMovieCollection.html
 build/classes/privatemoviecollection/gui/View/movieDetails.fxml
+*.properties
