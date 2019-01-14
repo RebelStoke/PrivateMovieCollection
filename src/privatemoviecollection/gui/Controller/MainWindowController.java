@@ -89,12 +89,10 @@ public class MainWindowController implements Initializable {
     public void setSongsTable() // This method gets all songs from database and loeads it into tableSongs
     {
         moviesAsObservable = FXCollections.observableArrayList(model.getMovies());
+        
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //System.out.println(titleCol);
-        categoryCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        //System.out.println(categoryCol);
+        categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoriesAsString"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        //System.out.println(ratingCol);
 
         tableOfMovies.getColumns().clear();
         tableOfMovies.setItems(moviesAsObservable);

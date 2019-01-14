@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 public class Movie
 {
     private String name;
+    private String categoriesAsString = "";
     private float rating;
     private String filelink;
     private int lastview;
@@ -84,8 +85,12 @@ public class Movie
     public void addCategory(Category category)
     {
         this.categories.add(category);
+        this.categoriesAsString += category.getName()+"|";
+        System.out.println(categoriesAsString);
     }
-    
+    public String getCategoriesAsString(){
+        return categoriesAsString;
+    }
     public void removeCategory(Category category)
     {
         this.categories.remove(category);
@@ -95,6 +100,7 @@ public class Movie
     {
         return categories;
     }
+    
     
     public boolean hasCategory(String quote)
     {
