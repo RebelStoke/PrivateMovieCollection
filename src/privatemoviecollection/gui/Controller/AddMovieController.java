@@ -8,7 +8,11 @@ package privatemoviecollection.gui.Controller;
 import java.awt.FileDialog;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import org.controlsfx.control.CheckComboBox;
+import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.PMCModel;
 
@@ -37,8 +42,9 @@ public class AddMovieController implements Initializable {
     private PMCModel model;
     private Movie selectedMovie;
     private MainWindowController mwController;
+    private ObservableList<Category> categories;
     @FXML
-    private CheckComboBox<?> categoryBox;
+    private CheckComboBox<Category> categoryBox;
     /**
      * Initializes the controller class.
      */
@@ -46,6 +52,8 @@ public class AddMovieController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
       model = PMCModel.getInstance();
       mwController = new MainWindowController();
+      categories = FXCollections.observableArrayList(model.getCategories());
+      categoryBox.getItems().addAll(categories);
       if (model.getSelectedMovie() != null)
       {
           selectedMovie = model.getSelectedMovie();
@@ -76,8 +84,13 @@ public class AddMovieController implements Initializable {
         float personalRating = Float.valueOf(personalField.getText());
         System.out.println(name+" " +rating+" " + path+" " + personalRating);
         int id = model.getHighestIDofMovies();
-        model.addMovie(name, rating, path, personalRating, id);
+        Movie m = model.addMovie(name, rating, path, personalRating, id);
         mwController.setSongsTable();
+        ObservableList<Category> cat = categoryBox.getCheckModel().getCheckedItems();
+        for (Category category : cat) {
+            System.out.println(category);
+        }
+        m.setCategories(cat);
        ((Node) (event.getSource())).getScene().getWindow().hide();
 
         

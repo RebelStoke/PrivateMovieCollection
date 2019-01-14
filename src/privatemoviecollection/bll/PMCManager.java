@@ -29,13 +29,14 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public void addMovie(String name, float rating, String path, float personalPath, int id) {
+    public Movie addMovie(String name, float rating, String path, float personalPath, int id) {
         Movie movie = new Movie(name, rating, personalPath, path,id);
         try {
-            mdao.addMovie(movie);
+            return mdao.addMovie(movie);
         } catch (SQLException ex) {
             Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     @Override
@@ -113,7 +114,7 @@ public final class PMCManager implements PMCLogicFacade {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
-
+    @Override
     public List<Category> getCategories() {
         return categories;
     }

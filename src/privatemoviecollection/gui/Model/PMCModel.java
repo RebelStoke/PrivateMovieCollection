@@ -36,13 +36,17 @@ public class PMCModel
         logicFacade = new PMCManager();
     }
     
-    public void addMovie(String name, float rating, String path, float personalPath,int id)
+    public Movie addMovie(String name, float rating, String path, float personalPath,int id)
     {
-        logicFacade.addMovie(name, rating, path, personalPath, id);
+        return logicFacade.addMovie(name, rating, path, personalPath, id);
     }
     
     public List getMovies(){
-   return  logicFacade.getMovies();
+        return  logicFacade.getMovies();
+    }
+    
+    public List getCategories(){
+        return logicFacade.getCategories();
     }
     
     public void removeMovie(Movie movie)

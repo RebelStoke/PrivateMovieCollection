@@ -100,6 +100,16 @@ public class Movie
         return categories;
     }
     
+    public void setCategories(ObservableList<Category> cat){
+    
+        this.categories = cat;
+        
+        for (Category category : categories) {
+            this.categoriesAsString += category.getName()+"|";
+        }
+        
+    }
+    
     
     public boolean hasCategory(String quote)
     {
