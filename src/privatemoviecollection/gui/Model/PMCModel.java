@@ -3,6 +3,7 @@ package privatemoviecollection.gui.Model;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,8 +19,8 @@ import privatemoviecollection.bll.PMCLogicFacade;
 import privatemoviecollection.bll.PMCManager;
 import privatemoviecollection.gui.Controller.MainWindowController;
 
-public class PMCModel
-{
+public class PMCModel {
+
     private final PMCLogicFacade logicFacade;
     public static PMCModel instance;
     private Movie movie;
@@ -27,10 +28,8 @@ public class PMCModel
     private MediaPlayer mediaPlayer;
     private boolean edit;
     
-    public static PMCModel getInstance() 
-    {
-        if (instance == null)
-        {
+    public static PMCModel getInstance() {
+        if (instance == null) {
             try {
                 instance = new PMCModel();
             } catch (IOException ex) {
@@ -42,80 +41,75 @@ public class PMCModel
         return instance;
     }
     
-    public PMCModel() throws IOException, SQLException
-    {
+    public PMCModel() throws IOException, SQLException {
         logicFacade = new PMCManager();
     }
     
-    public Movie addMovie(String name, float rating, String path, float personalPath,int id)
-    {
-        return logicFacade.addMovie(name, rating, path, personalPath, id);
+    public Movie addMovie(String name, float rating, String path, float personalPath, int id) {
+        Movie m = new Movie(name, rating, personalPath, name, id);
+        if (isEdit()) {
+            logicFacade.removeMovie(getSelectedMovie());
+            logicFacade.addMovie(name, rating, path, personalPath, id);
+        } else {
+            logicFacade.addMovie(name, rating, path, personalPath, id);
+        }
+        
+        return m;
     }
     
-    public List getMovies(){
-        return  logicFacade.getMovies();
+    public List getMovies() {
+        return logicFacade.getMovies();
     }
     
-    public List getCategories(){
+    public List getCategories() {
         return logicFacade.getCategories();
     }
     
-    public void removeMovie(Movie movie)
-    {
+    public void removeMovie(Movie movie) {
         logicFacade.removeMovie(movie);
     }
     
-    public void addCategory(Category category)
-    {
+    public void addCategory(Category category) {
         logicFacade.addCategory(category);
     }
     
-    public void removeCategory(Category category)
-    {
+    public void removeCategory(Category category) {
         logicFacade.removeCategory(category);
     }
     
-    public void setCategory(Movie movie, Category category)
-    {
+    public void setCategory(Movie movie, Category category) {
         logicFacade.setCategory(movie, category);
     }
     
-    public Movie searchMovie(String quote)
-    {
+    public Movie searchMovie(String quote) {
         return logicFacade.searchMovie(quote);
     }
     
-    public void addPersonalRating(float personalRating, Movie movie)
-    {
+    public void addPersonalRating(float personalRating, Movie movie) {
         logicFacade.addPersonalRating(personalRating, movie);
     }
     
-    public void removePersonalRating(Movie movie)
-    {
+    public void removePersonalRating(Movie movie) {
         logicFacade.removePersonalRating(movie);
     }
     
-    public void saveMoviesInDatabase()
-    {
+    public void saveMoviesInDatabase() {
         logicFacade.saveMoviesInDatabase();
     }
     
-    public void setSelectedMovie(Movie movie)
-    {
+    public void setSelectedMovie(Movie movie) {
         this.movie = movie;
     }
     
-    public Movie getSelectedMovie()
-    {
+    public Movie getSelectedMovie() {
         return movie;
     }
     
-    public int getHighestIDofMovies(){
-    return logicFacade.getHighestIDofMovies();
+    public int getHighestIDofMovies() {
+        return logicFacade.getHighestIDofMovies();
     }
     
-    public void setMediaPlayer(Movie movie) 
-    {
+    public void setMediaPlayer(Movie movie) {
         
         String moviePath = movie.getFilelink();
         moviePath = moviePath.replace("\\", "\\\\");
@@ -123,11 +117,9 @@ public class PMCModel
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.setAutoPlay(true);
         
-       
     }
     
-    public MediaPlayer getMediaPlayer()
-    {
+    public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
     
@@ -147,18 +139,15 @@ public class PMCModel
         }
     }
     
-    public void editMovie(Movie movie)
-    {
+    public void editMovie(Movie movie) {
         logicFacade.editMovie(movie);
     }
-
-    public boolean isEdit()
-    {
+    
+    public boolean isEdit() {
         return edit;
     }
-
-    public void setEdit(boolean edit)
-    {
+    
+    public void setEdit(boolean edit) {
         this.edit = edit;
     }
 }

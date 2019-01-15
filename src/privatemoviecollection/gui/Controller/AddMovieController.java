@@ -84,7 +84,7 @@ public class AddMovieController implements Initializable {
 
     @FXML
     private void acceptButtonMethod(ActionEvent event) {
-        boolean isMovieCorrect=true;
+        try {boolean isMovieCorrect=true;
         boolean titleCorrect=true;
         List<Movie> allMovies;
         allMovies=model.getMovies();
@@ -118,6 +118,11 @@ public class AddMovieController implements Initializable {
         isMovieCorrect=true;
         titleCorrect=true;
        ((Node) (event.getSource())).getScene().getWindow().hide();
+            
+        } catch (Exception e) {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+        }
+        
 
         
     }
