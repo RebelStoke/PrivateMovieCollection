@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.dal.CategoryDAO;
+import privatemoviecollection.dal.DALException;
 import privatemoviecollection.dal.MovieDAO;
 
 public final class PMCManager implements PMCLogicFacade {
@@ -17,7 +18,7 @@ public final class PMCManager implements PMCLogicFacade {
     private List<Movie> movies;
     private List<Category> categories;
 
-    public PMCManager() throws IOException, SQLException {
+    public PMCManager() throws IOException, DALException {
         mdao = new MovieDAO();
         cdao = cdao.getInstance();
         cdao.getAllCategoriesFromDatabase();
@@ -31,29 +32,22 @@ public final class PMCManager implements PMCLogicFacade {
     @Override
     public Movie addMovie(String name, float rating, String path, float personalPath, int id) {
         Movie movie = new Movie(name, rating, personalPath, path,id);
-        try {
-            return mdao.addMovie(movie);
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+        return mdao.addMovie(movie);
     }
 
     @Override
     public void removeMovie(Movie movie) {
-        try {
-            mdao.removeMovie(movie);
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mdao.removeMovie(movie);
     }
 
     @Override
-    public List getAllMoviesFromDatabase() {
-        try {
+    public List getAllMoviesFromDatabase() throws BLLException {
+        try
+        {
             mdao.getAllMoviesFromDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
         return null;
     }
@@ -69,11 +63,13 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public List getAllCategoriesFromDatabase() {
-        try {
+    public List getAllCategoriesFromDatabase() throws BLLException {
+        try
+        {
             cdao.getAllCategoriesFromDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
         return null;
     }
@@ -124,11 +120,13 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public void saveMoviesInDatabase() {
-        try {
+    public void saveMoviesInDatabase() throws BLLException {
+        try
+        {
             mdao.saveMoviesInDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
     }
     @Override

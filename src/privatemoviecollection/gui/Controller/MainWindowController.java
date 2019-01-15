@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,8 +28,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
+import privatemoviecollection.gui.Model.ModelException;
 import privatemoviecollection.gui.Model.PMCModel;
 
 /**
@@ -36,7 +39,8 @@ import privatemoviecollection.gui.Model.PMCModel;
  *
  * @author Revy
  */
-public class MainWindowController implements Initializable {
+public class MainWindowController implements Initializable
+{
 
     @FXML
     private Button add;
@@ -55,19 +59,23 @@ public class MainWindowController implements Initializable {
     private TableColumn<Movie, String> categoryCol;
     @FXML
     private TableColumn<Movie, Float> ratingCol;
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database! \n Do you want to Delete the movies now?", ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database!", ButtonType.OK);
         alert.showAndWait();
-        if (alert.getResult() == ButtonType.YES) {
+        try
+        {
+            model = PMCModel.getInstance();
+        } catch (ModelException ex)
+        {
+            newAlert(ex);
         }
-        model = PMCModel.getInstance();
 //        try
 //        {
 //            String name = "";
@@ -78,15 +86,13 @@ public class MainWindowController implements Initializable {
 //        }
         moviesAsObservable = FXCollections.observableArrayList();
         setSongsTable();
-    
 
-   
     }
 
     public void setSongsTable() // This method gets all songs from database and loeads it into tableSongs
     {
         moviesAsObservable = FXCollections.observableArrayList(model.getMovies());
-        
+
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoriesAsString"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
@@ -97,7 +103,8 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void addMovieMethod(ActionEvent event) throws IOException {
+    private void addMovieMethod(ActionEvent event)
+    {
         Movie m = null;
         model.setSelectedMovie(m);
         model.setEdit(false);
@@ -105,62 +112,96 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void exitButtonMethod(ActionEvent event) {
-        model.saveMoviesInDatabase();
-        System.exit(1);
+    private void exitButtonMethod(ActionEvent event)
+    {
+        try
+        {
+            model.saveMoviesInDatabase();
+            System.exit(1);
+        } catch (ModelException ex)
+        {
+            newAlert(ex);
+        }
 
     }
 
     @FXML
-    private void minimizeButtonMethod(ActionEvent event) {
+    private void minimizeButtonMethod(ActionEvent event)
+    {
     }
 
     @FXML
-    private void deleteMovieMethod(ActionEvent event) {
+    private void deleteMovieMethod(ActionEvent event)
+    {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
         setSongsTable();
     }
 
     @FXML
-    private void editMovieMethod(ActionEvent event) throws IOException {
+    private void editMovieMethod(ActionEvent event)
+    {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
+        if (m != null) {
         model.setSelectedMovie(m);
         model.setEdit(true);
         openWindow();
+        } else
+        {
+            newAlert(new Exception("Please select a movie!"));
+        }
     }
 
     @FXML
-    private void playMedia(MouseEvent event) {
-       play();
+    private void playMedia(MouseEvent event)
+    {
+        if (tableOfMovies.getSelectionModel().getSelectedItem() != null)
+        {
+        play();
+        } else
+        {
+            newAlert(new Exception("Please select a movie!"));
+        }
     }
 
     @FXML
-    private void doubleClick(MouseEvent event) throws IOException {
-        if (event.getClickCount() == 2&&tableOfMovies.getSelectionModel().getSelectedItem()!=null){
-            Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
+    private void doubleClick(MouseEvent event)
+    {
+        if (event.getClickCount() == 2 && tableOfMovies.getSelectionModel().getSelectedItem() != null)
+        {
+            try
+            {
+                Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
 //            model.setSelectedMovie(movie);
 //            String path = "/privatemoviecollection/gui/View/movieDetails.fxml";
 //            model.openWindow(path, root1);
-            ObservableList<Category> categories = movie.getCategories();
-            String title = movie.getName();
-            String rating = Float.toString(movie.getRating());
-            Parent root3;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/movieDetails.fxml"));
-            root3 = (Parent) fxmlLoader.load();
-            fxmlLoader.<MovieDetailsController>getController().setController(this);
-            fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root3));
-            stage.centerOnScreen();
-            stage.show();
-        
+                ObservableList<Category> categories = movie.getCategories();
+                String title = movie.getName();
+                String rating = Float.toString(movie.getRating());
+                Parent root3;
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/movieDetails.fxml"));
+                root3 = (Parent) fxmlLoader.load();
+                fxmlLoader.<MovieDetailsController>getController().setController(this);
+                fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root3));
+                stage.centerOnScreen();
+                stage.show();
+            } catch (IOException ex)
+            {
+                Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                newAlert(ex);
+            }
+
         }
-        
+
     }
-    public void play(){
-    
-    try {
+
+    public void play()
+    {
+
+        try
+        {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
 //            model.setSelectedMovie(movie);
 //            String path = "/privatemoviecollection/gui/View/mediaPlayer.fxml";
@@ -173,16 +214,19 @@ public class MainWindowController implements Initializable {
             stage.setScene(new Scene(root2));
             stage.centerOnScreen();
             stage.show();
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            newAlert(ex);
         }
-    
-    
+
     }
-    
-    private void openWindow() throws IOException
+
+    private void openWindow()
     {
-             Parent root3;
+        try
+        {
+            Parent root3;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
             root3 = (Parent) fxmlLoader.load();
             fxmlLoader.<AddMovieController>getController().setController(this);
@@ -190,5 +234,16 @@ public class MainWindowController implements Initializable {
             stage.setScene(new Scene(root3));
             stage.centerOnScreen();
             stage.show();
+        } catch (IOException ex)
+        {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            newAlert(ex);
+        }
+    }
+
+    private void newAlert(Exception ex)
+    {
+        Alert a = new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage(), ButtonType.OK);
+        a.show();
     }
 }

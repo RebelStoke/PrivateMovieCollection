@@ -10,13 +10,13 @@ public interface PMCLogicFacade
     
     public void removeMovie(Movie movie);
     
-    public List getAllMoviesFromDatabase();
+    public List getAllMoviesFromDatabase() throws BLLException;
     
     public void addCategory(Category category);
     
     public void removeCategory(Category category);
     
-    public List getAllCategoriesFromDatabase();
+    public List getAllCategoriesFromDatabase() throws BLLException;
     
     public void setCategory(Movie movie, Category category);
     
@@ -26,7 +26,7 @@ public interface PMCLogicFacade
     
     public void removePersonalRating(Movie movie);
     
-    public void saveMoviesInDatabase();
+    public void saveMoviesInDatabase() throws BLLException;
     
     public List getMovies();
     

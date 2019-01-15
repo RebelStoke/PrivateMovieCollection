@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,8 +35,14 @@ public class ConnectionProvider
         ds.setPassword(databaseProperties.getProperty("Password"));
     }
 
-    public Connection getConnection() throws SQLServerException
+    public Connection getConnection() throws DALException
     {
-        return ds.getConnection();
+        try
+        {
+            return ds.getConnection();
+        } catch (SQLServerException ex)
+        {
+            throw new DALException(ex);
+        }
     }
 }

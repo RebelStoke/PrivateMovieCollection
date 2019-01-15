@@ -40,18 +40,18 @@ public class CategoryDAO
         return instance;
     }
       
-       public Category addCategory(Category category) throws SQLException
+       public Category addCategory(Category category)
     {
         listCategories.add(category);
         return category;
     }
     
-    public void removeCategory(Category category) throws SQLException
+    public void removeCategory(Category category)
     {
         listCategories.remove(category);
     }
 
-    public void getAllCategoriesFromDatabase() throws SQLException
+    public void getAllCategoriesFromDatabase() throws DALException
     {
       
         try (Connection con = cp.getConnection())
@@ -65,6 +65,9 @@ public class CategoryDAO
                 Category category = new Category(id,name);
                 listCategories.add(category);
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
         System.out.println(listCategories.size());
     }
@@ -73,7 +76,7 @@ public class CategoryDAO
         return listCategories;
     }
     
-    public void saveCategoriesInDatabase() throws SQLException {
+    public void saveCategoriesInDatabase() throws DALException {
         int ArraySize = listCategories.size();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -86,12 +89,15 @@ public class CategoryDAO
                 ppst.setString(2, actualCategory.getName());
                 ppst.execute();
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
 
     }
     
     
-    public List getCategoryByID(int id) throws SQLServerException, SQLException{
+    public List getCategoryByID(int id) throws DALException {
         List<Category> categories = new ArrayList<>();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -108,15 +114,12 @@ public class CategoryDAO
                        categories.add(listCategories.get(i));
                 }
                 }
-            }
+            } catch (SQLException ex)
+        {
+            throw new DALException(ex);
+        }
         
         return categories;
     }
-    
-    
-    
-    
-    
-    
     }
 

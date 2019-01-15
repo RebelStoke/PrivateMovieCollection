@@ -15,8 +15,10 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
+import privatemoviecollection.bll.BLLException;
 import privatemoviecollection.bll.PMCLogicFacade;
 import privatemoviecollection.bll.PMCManager;
+import privatemoviecollection.dal.DALException;
 import privatemoviecollection.gui.Controller.MainWindowController;
 
 public class PMCModel {
@@ -28,33 +30,28 @@ public class PMCModel {
     private MediaPlayer mediaPlayer;
     private boolean edit;
     
-    public static PMCModel getInstance() {
+    public static PMCModel getInstance() throws ModelException {
         if (instance == null) {
-            try {
                 instance = new PMCModel();
-            } catch (IOException ex) {
-                Logger.getLogger(PMCModel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(PMCModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return instance;
     }
     
-    public PMCModel() throws IOException, SQLException {
-        logicFacade = new PMCManager();
+    public PMCModel() throws ModelException {
+        try
+        {
+            logicFacade = new PMCManager();
+        } catch (DALException ex)
+        {
+            throw new ModelException(ex);
+        } catch (IOException ex)
+        {
+            throw new ModelException(ex);
+        }
     }
     
     public Movie addMovie(String name, float rating, String path, float personalPath, int id) {
-        Movie m = new Movie(name, rating, personalPath, name, id);
-        if (isEdit()) {
-            logicFacade.removeMovie(getSelectedMovie());
-            logicFacade.addMovie(name, rating, path, personalPath, id);
-        } else {
-            logicFacade.addMovie(name, rating, path, personalPath, id);
-        }
-        
-        return m;
+        return logicFacade.addMovie(name, rating, path, personalPath, id);
     }
     
     public List getMovies() {
@@ -93,8 +90,16 @@ public class PMCModel {
         logicFacade.removePersonalRating(movie);
     }
     
-    public void saveMoviesInDatabase() {
-        logicFacade.saveMoviesInDatabase();
+    public void saveMoviesInDatabase() throws ModelException {
+       
+        try
+        {
+            logicFacade.saveMoviesInDatabase();
+        } catch (BLLException ex)
+        {
+            throw new ModelException(ex);
+        }
+        
     }
     
     public void setSelectedMovie(Movie movie) {

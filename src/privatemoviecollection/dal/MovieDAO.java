@@ -28,13 +28,13 @@ public class MovieDAO {
         cdao = cdao.getInstance();
     }
 
-    public Movie addMovie(Movie movie) throws SQLException {
+    public Movie addMovie(Movie movie) {
         System.out.println(movie);
         listMovies.add(movie);
         return movie;
     }
 
-    public void removeMovie(Movie movie) throws SQLException {
+    public void removeMovie(Movie movie) {
         listMovies.remove(movie);
     }
 
@@ -46,7 +46,7 @@ public class MovieDAO {
         return listMovies.get(ArraySize-1).getId()+1;
     }
 
-    public void getAllMoviesFromDatabase() throws SQLException {
+    public void getAllMoviesFromDatabase() throws DALException {
         List<Category> listCategories = new ArrayList<>();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -64,6 +64,9 @@ public class MovieDAO {
                 }
                 listMovies.add(movie);
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
     }
     
@@ -73,7 +76,7 @@ public class MovieDAO {
         
     }
 
-    public void saveMoviesInDatabase() throws SQLException {
+    public void saveMoviesInDatabase() throws DALException {
         int ArraySize = listMovies.size();
         int actualMovieIDinDB=-1;
         try (Connection con = cp.getConnection()) {
@@ -114,6 +117,9 @@ public class MovieDAO {
                 ppst2.execute();
                 }
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
 
     }

@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,11 +20,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import org.controlsfx.control.CheckComboBox;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
+import privatemoviecollection.gui.Model.ModelException;
 import privatemoviecollection.gui.Model.PMCModel;
 
 /**
@@ -51,23 +56,28 @@ public class AddMovieController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      model = PMCModel.getInstance();
-      mwController = new MainWindowController();
-      categories = FXCollections.observableArrayList(model.getCategories());
-      categoryBox.getItems().addAll(categories);
-      if (model.getSelectedMovie() != null)
-      {
-          selectedMovie = model.getSelectedMovie();
-          nameField.setText(selectedMovie.getName());
-          ratingField.setText(String.valueOf(selectedMovie.getRating()));
-          pathField.setText(selectedMovie.getFilelink());
-          personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
-          ObservableList<Category> ob = selectedMovie.getCategories();
-          for (Category object : ob) {
-              categoryBox.getCheckModel().check(object);
-          }
-          
-      }
+        try
+        {
+            model = PMCModel.getInstance();
+            mwController = new MainWindowController();
+            categories = FXCollections.observableArrayList(model.getCategories());
+            categoryBox.getItems().addAll(categories);
+            if (model.getSelectedMovie() != null)
+            {
+                selectedMovie = model.getSelectedMovie();
+                nameField.setText(selectedMovie.getName());
+                ratingField.setText(String.valueOf(selectedMovie.getRating()));
+                pathField.setText(selectedMovie.getFilelink());
+                personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
+                ObservableList<Category> ob = selectedMovie.getCategories();
+                for (Category object : ob) {
+                    categoryBox.getCheckModel().check(object);
+                }
+                model.removeMovie(selectedMovie);
+            } } catch (ModelException ex)
+        {
+            newAlert(ex);
+        }
     }    
 
     @FXML
@@ -77,14 +87,17 @@ public class AddMovieController implements Initializable {
         if(fd.getFile()!=null){
         File[] f = fd.getFiles();
         String filePath = fd.getFiles()[0].getPath();
+        if (filePath.toString().endsWith(".mp4") || filePath.toString().endsWith(".mpeg4"))
         pathField.setText(filePath);
+        else newAlert(new Exception("Only .mp4 or .mpeg4 files can be chosen!"));
         }
-        else System.out.println("file not chosen");
+        else newAlert(new Exception("File not chosen!"));
         }
 
     @FXML
     private void acceptButtonMethod(ActionEvent event) {
-        try {boolean isMovieCorrect=true;
+        try {
+        boolean isMovieCorrect=true;
         boolean titleCorrect=true;
         List<Movie> allMovies;
         allMovies=model.getMovies();
@@ -132,7 +145,11 @@ public class AddMovieController implements Initializable {
         this.mwController = controller;
     }
     
-    
+    private void newAlert(Exception ex)
+    {
+        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
+        a.show();
+    }
     
     }
     
