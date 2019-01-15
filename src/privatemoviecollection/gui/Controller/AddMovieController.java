@@ -84,12 +84,29 @@ public class AddMovieController implements Initializable {
 
     @FXML
     private void acceptButtonMethod(ActionEvent event) {
+        boolean isMovieCorrect=true;
+        boolean titleCorrect=true;
+        List<Movie> allMovies;
+        allMovies=model.getMovies();
         String name = nameField.getText();
-        float rating = Float.parseFloat(ratingField.getText());
+        float rating =0;
+        rating = Float.parseFloat(ratingField.getText());
         String path = pathField.getText();
-        float personalRating = Float.valueOf(personalField.getText());
-        System.out.println(name+" " +rating+" " + path+" " + personalRating);
+        float personalRating=0;
+        personalRating = Float.valueOf(personalField.getText());
         int id = model.getHighestIDofMovies();
+        
+        for (Movie movie : allMovies) {
+            if(movie.getName().equals(name))
+                titleCorrect=false;
+        }
+        
+        if(titleCorrect && rating<10.0 && personalRating<10.0)
+            isMovieCorrect=true;
+        else
+            isMovieCorrect=false;
+        
+        if(isMovieCorrect){
         Movie m = model.addMovie(name, rating, path, personalRating, id);
         mwController.setSongsTable();
         ObservableList<Category> cat = categoryBox.getCheckModel().getCheckedItems();
@@ -97,6 +114,9 @@ public class AddMovieController implements Initializable {
             System.out.println(category);
         }
         m.setCategories(cat);
+        }
+        isMovieCorrect=true;
+        titleCorrect=true;
        ((Node) (event.getSource())).getScene().getWindow().hide();
 
         
