@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
@@ -61,6 +62,11 @@ public class AddMovieController implements Initializable {
           ratingField.setText(String.valueOf(selectedMovie.getRating()));
           pathField.setText(selectedMovie.getFilelink());
           personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
+          ObservableList<Category> ob = selectedMovie.getCategories();
+          for (Category object : ob) {
+              categoryBox.getCheckModel().check(object);
+          }
+          
       }
     }    
 
