@@ -11,12 +11,14 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import privatemoviecollection.be.Movie;
+import privatemoviecollection.gui.Model.PMCModel;
 
 /**
  * FXML Controller class
@@ -26,6 +28,7 @@ import privatemoviecollection.be.Movie;
 public class MediaPlayerController implements Initializable {
 
     private MainWindowController mwController;
+    private PMCModel model;
     private Movie movie;
     private MediaPlayer mediaPlayer;
     private Media hit;
@@ -34,7 +37,8 @@ public class MediaPlayerController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
+       model = PMCModel.getInstance();
+       movie = model.getSelectedMovie();
     }
 
 private void setMusicPlayer() 
@@ -59,6 +63,7 @@ void setController(MainWindowController controller, Movie movie){
     @FXML
     private void exitButton(ActionEvent event) {
         mediaPlayer.stop();
+       ((Node) (event.getSource())).getScene().getWindow().hide();
         
     }
 

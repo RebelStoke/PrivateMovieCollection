@@ -132,5 +132,10 @@ public final class PMCManager implements PMCLogicFacade {
     return mdao.getHighestIDofMovies();
     }
 
+    @Override
+    public void editMovie(Movie movie)
+    {
+    }
+
 
 }

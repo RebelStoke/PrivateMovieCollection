@@ -74,11 +74,20 @@ public class AddMovieController implements Initializable {
         float rating = Float.parseFloat(ratingField.getText());
         String path = pathField.getText();
         float personalRating = Float.valueOf(personalField.getText());
-        System.out.println(name+" " +rating+" " + path+" " + personalRating);
-        int id = model.getHighestIDofMovies();
-        model.addMovie(name, rating, path, personalRating, id);
+        
+        if (!model.isEdit())
+        {
+            System.out.println(name + " " + rating + " " + path + " " + personalRating);
+            int id = model.getHighestIDofMovies();
+            model.addMovie(name, rating, path, personalRating, id);
+        } else if (model.isEdit())
+        {
+            Movie m = new Movie(name, rating, personalRating, path, selectedMovie.getId());
+            model.editMovie(m);
+        }
+        
         mwController.setSongsTable();
-       ((Node) (event.getSource())).getScene().getWindow().hide();
+        ((Node) (event.getSource())).getScene().getWindow().hide();
 
         
     }

@@ -31,4 +31,6 @@ public interface PMCLogicFacade
     public List getMovies();
     
     public int getHighestIDofMovies();
+    
+    public void editMovie(Movie movie);
 }

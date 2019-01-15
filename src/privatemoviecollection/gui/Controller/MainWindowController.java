@@ -56,6 +56,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private TableColumn<Movie, Float> ratingCol;
     
+    private Parent root1;
     
     /**
      * Initializes the controller class.
@@ -66,8 +67,6 @@ public class MainWindowController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database! \n Do you want to Delete the movies now?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
-
-        } else if (alert.getResult() == ButtonType.NO) {
 
         }
         model = PMCModel.getInstance();
@@ -99,27 +98,12 @@ public class MainWindowController implements Initializable {
         tableOfMovies.getColumns().addAll(titleCol, categoryCol, ratingCol);
     }
 
-    public void openSongWindow() // opens up SongWindow and sets the connection
-    {
-        try {
-            Parent root1;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
-            root1 = (Parent) fxmlLoader.load();
-            fxmlLoader.<AddMovieController>getController().setController(this);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @FXML
-    private void addMovieMethod(ActionEvent event) {
+    private void addMovieMethod(ActionEvent event) throws IOException {
         Movie m = null;
         model.setSelectedMovie(m);
-        openSongWindow();
+        model.setEdit(false);
+        openWindow();
     }
 
     @FXML
@@ -141,10 +125,11 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void editMovieMethod(ActionEvent event) {
+    private void editMovieMethod(ActionEvent event) throws IOException {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.setSelectedMovie(m);
-        openSongWindow();
+        model.setEdit(true);
+        openWindow();
     }
 
     @FXML
@@ -156,6 +141,9 @@ public class MainWindowController implements Initializable {
     private void doubleClick(MouseEvent event) throws IOException {
         if (event.getClickCount() == 2&&tableOfMovies.getSelectionModel().getSelectedItem()!=null){
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
+//            model.setSelectedMovie(movie);
+//            String path = "/privatemoviecollection/gui/View/movieDetails.fxml";
+//            model.openWindow(path, root1);
             ObservableList<Category> categories = movie.getCategories();
             String title = movie.getName();
             String rating = Float.toString(movie.getRating());
@@ -176,6 +164,9 @@ public class MainWindowController implements Initializable {
     
     try {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
+//            model.setSelectedMovie(movie);
+//            String path = "/privatemoviecollection/gui/View/mediaPlayer.fxml";
+//            model.openWindow(path, root1);
             Parent root2;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
             root2 = (Parent) fxmlLoader.load();
@@ -189,5 +180,17 @@ public class MainWindowController implements Initializable {
         }
     
     
+    }
+    
+    private void openWindow() throws IOException
+    {
+             Parent root3;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
+            root3 = (Parent) fxmlLoader.load();
+            fxmlLoader.<AddMovieController>getController().setController(this);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root3));
+            stage.centerOnScreen();
+            stage.show();
     }
 }
