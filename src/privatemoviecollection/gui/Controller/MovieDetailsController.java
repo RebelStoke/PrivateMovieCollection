@@ -13,11 +13,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import privatemoviecollection.be.Category;
+import privatemoviecollection.gui.Model.PMCModel;
 
 /**
  * FXML Controller class
@@ -35,10 +37,19 @@ MainWindowController mwController;
     @FXML
     private Label rating;
     @FXML
-    private ListView<?> listView;
+    private ListView<Category> listView;
+    
+    private PMCModel model;
+    private Parent root1;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {} 
+    public void initialize(URL url, ResourceBundle rb) {
+    //        model = PMCModel.getInstance();
+//        Movie m = model.getSelectedMovie();
+//        title.setText(m.getName());
+//        listView.getItems().addAll(m.getCategories());
+//        rating.setText(String.valueOf(m.getRating()));
+    } 
     void setController(MainWindowController controller){
         this.mwController = controller;
         
@@ -54,6 +65,8 @@ MainWindowController mwController;
     @FXML
     private void playButton(ActionEvent event) {
         mwController.play();
+//          String path = "/privatemoviecollection/gui/View/mediaPlayer.fxml";
+//          model.openWindow(path, root1);
     }
     
 }
