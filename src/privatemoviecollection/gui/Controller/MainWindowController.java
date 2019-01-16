@@ -28,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -209,9 +210,8 @@ public class MainWindowController implements Initializable
         try
         {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
-//            model.setSelectedMovie(movie);
-//            String path = "/privatemoviecollection/gui/View/mediaPlayer.fxml";
-//            model.openWindow(path, root1);
+            if(movie.getFilelink().contains(".mp4")||movie.getFilelink().contains(".mpeg4")){
+            hideStage();    
             Parent root2;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
             root2 = (Parent) fxmlLoader.load();
@@ -221,6 +221,7 @@ public class MainWindowController implements Initializable
             stage.setScene(new Scene(root2));
             stage.centerOnScreen();
             stage.show();
+            }
         } catch (IOException ex)
         {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,5 +276,14 @@ public class MainWindowController implements Initializable
         {
             search();
         }
+    }
+    
+    public void showStage(){
+        Stage stage = (Stage) add.getScene().getWindow();
+        stage.show();
+    }
+    public void hideStage(){
+        Stage stage = (Stage) add.getScene().getWindow();
+        stage.hide();
     }
 }

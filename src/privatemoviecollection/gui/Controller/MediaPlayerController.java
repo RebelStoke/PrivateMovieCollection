@@ -74,6 +74,7 @@ void setController(MainWindowController controller, Movie movie){
     @FXML
     private void exitButton(ActionEvent event) {
         mediaPlayer.stop();
+        mwController.showStage();
        ((Node) (event.getSource())).getScene().getWindow().hide();
         
     }
