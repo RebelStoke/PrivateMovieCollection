@@ -79,10 +79,6 @@ void setController(MainWindowController controller, Movie movie){
         
     }
 
-    @FXML
-    private void playButton(MouseEvent event) {
-        mediaPlayer.play();
-    }
 
     @FXML
     private void pauseButton(MouseEvent event) {
@@ -93,6 +89,26 @@ void setController(MainWindowController controller, Movie movie){
     {
         Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
         a.show();
+    }
+
+    @FXML
+    private void continueButton(MouseEvent event) {
+        mediaPlayer.play();
+    }
+
+    @FXML
+    private void previousButton(MouseEvent event) {
+        int i = model.getMovies().indexOf(movie);
+        movie = (Movie) model.getMovies().get(i-1);
+        setMusicPlayer();
+    }
+
+    @FXML
+    private void nextButton(MouseEvent event) {
+        int i = model.getMovies().indexOf(movie);
+        movie = (Movie) model.getMovies().get(i+1);
+        setMusicPlayer();
+        
     }
     
 }
