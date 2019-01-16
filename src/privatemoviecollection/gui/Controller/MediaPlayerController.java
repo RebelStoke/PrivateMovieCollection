@@ -7,6 +7,8 @@ package privatemoviecollection.gui.Controller;
 
 import java.io.File;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,22 +41,19 @@ public class MediaPlayerController implements Initializable {
     private Media hit;
     @FXML
     private MediaView mediaView;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try
-        {
+        try {
             model = PMCModel.getInstance();
-        } catch (ModelException ex)
-        {
+        } catch (ModelException ex) {
             newAlert(ex);
         }
-       movie = model.getSelectedMovie();
+        movie = model.getSelectedMovie();
     }
 
-private void setMusicPlayer() 
-    {
-        
+    private void setMusicPlayer() {
+
         String moviePath = movie.getFilelink();
         moviePath = moviePath.replace("\\", "\\\\");
         System.out.println(moviePath);
@@ -63,20 +62,22 @@ private void setMusicPlayer()
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.play();
-       
+        Date date = Date.valueOf(LocalDate.now());
+        movie.setLastview(date);
     }
-void setController(MainWindowController controller, Movie movie){
+
+    void setController(MainWindowController controller, Movie movie) {
         this.mwController = controller;
         this.movie = movie;
         setMusicPlayer();
-}
+    }
 
     @FXML
     private void exitButton(ActionEvent event) {
         mediaPlayer.stop();
         mwController.showStage();
-       ((Node) (event.getSource())).getScene().getWindow().hide();
-        
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+
     }
 
     @FXML
@@ -88,11 +89,10 @@ void setController(MainWindowController controller, Movie movie){
     private void pauseButton(MouseEvent event) {
         mediaPlayer.pause();
     }
-    
-    private void newAlert(Exception ex)
-    {
+
+    private void newAlert(Exception ex) {
         Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
         a.show();
     }
-    
+
 }

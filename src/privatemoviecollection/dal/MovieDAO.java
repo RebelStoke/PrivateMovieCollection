@@ -94,7 +94,7 @@ public class MovieDAO {
                 ppst.setFloat(2, actualMovie.getRating());
                 ppst.setFloat(3, actualMovie.getPersonalrating());
                 ppst.setString(4, actualMovie.getFilelink());
-                ppst.setDate(5, (Date) actualMovie.getLastview());
+                ppst.setDate(5,  actualMovie.getLastview());
                 ppst.execute();
                 
                 String sql3 = "SELECT * FROM Movies WHERE name=?";
