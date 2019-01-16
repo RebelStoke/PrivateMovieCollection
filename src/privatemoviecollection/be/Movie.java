@@ -1,6 +1,7 @@
 package privatemoviecollection.be;
 
-import java.util.Date;
+
+import java.sql.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
