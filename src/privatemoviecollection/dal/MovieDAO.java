@@ -3,6 +3,7 @@ package privatemoviecollection.dal;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -93,7 +94,7 @@ public class MovieDAO {
                 ppst.setFloat(2, actualMovie.getRating());
                 ppst.setFloat(3, actualMovie.getPersonalrating());
                 ppst.setString(4, actualMovie.getFilelink());
-                ppst.setInt(5, actualMovie.getLastview());
+                ppst.setDate(5, (Date) actualMovie.getLastview());
                 ppst.execute();
                 
                 String sql3 = "SELECT * FROM Movies WHERE name=?";
