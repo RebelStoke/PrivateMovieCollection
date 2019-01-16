@@ -121,7 +121,7 @@ public class AddMovieController implements Initializable {
         
         if(isMovieCorrect){
         Movie m = model.addMovie(name, rating, path, personalRating, id);
-        mwController.setSongsTable();
+        mwController.setSongsTable(model.getMovies());
         ObservableList<Category> cat = categoryBox.getCheckModel().getCheckedItems();
         for (Category category : cat) {
             System.out.println(category);

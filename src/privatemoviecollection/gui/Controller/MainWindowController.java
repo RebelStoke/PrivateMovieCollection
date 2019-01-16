@@ -7,6 +7,8 @@ package privatemoviecollection.gui.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +26,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -59,6 +64,8 @@ public class MainWindowController implements Initializable
     private TableColumn<Movie, String> categoryCol;
     @FXML
     private TableColumn<Movie, Float> ratingCol;
+    @FXML
+    private TextField searchField;
 
     /**
      * Initializes the controller class.
@@ -84,14 +91,13 @@ public class MainWindowController implements Initializable
 //        {
 //            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        moviesAsObservable = FXCollections.observableArrayList();
-        setSongsTable();
+        setSongsTable(model.getMovies());
 
     }
 
-    public void setSongsTable() // This method gets all songs from database and loeads it into tableSongs
+    public void setSongsTable(List<Movie> list) // This method gets all songs from database and loeads it into tableSongs
     {
-        moviesAsObservable = FXCollections.observableArrayList(model.getMovies());
+        moviesAsObservable = FXCollections.observableArrayList(list);
 
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoriesAsString"));
@@ -135,7 +141,7 @@ public class MainWindowController implements Initializable
     {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
-        setSongsTable();
+        setSongsTable(model.getMovies());
     }
 
     @FXML
@@ -211,6 +217,7 @@ public class MainWindowController implements Initializable
             root2 = (Parent) fxmlLoader.load();
             fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
             Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root2));
             stage.centerOnScreen();
             stage.show();
@@ -245,5 +252,28 @@ public class MainWindowController implements Initializable
     {
         Alert a = new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage(), ButtonType.OK);
         a.show();
+    }
+    
+    public void search(){
+    String txt = searchField.getText();
+    txt = txt.toLowerCase();
+    List<Movie> list1 = model.getMovies();
+    List<Movie> list2 = new ArrayList<Movie>();
+        for (Movie movie : list1) {
+            if(movie.getName().toLowerCase().contains(txt)||movie.getCategoriesAsString().toLowerCase().contains(txt)){
+                list2.add(movie);
+            }       
+        }
+     moviesAsObservable = FXCollections.observableArrayList(list2);  
+     setSongsTable(list2);
+    }
+    
+    @FXML
+    private void enterSearch(KeyEvent event) // executes search method by clicking enter
+    {
+        if (event.getCode() == KeyCode.ENTER && searchField.isFocused())
+        {
+            search();
+        }
     }
 }
