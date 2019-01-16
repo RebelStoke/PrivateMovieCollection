@@ -47,7 +47,7 @@
             <Font size="27.0" />
          </font>
       </Button>
-      <ListView fx:id="listView" layoutX="423.0" layoutY="91.0" prefHeight="23.0" prefWidth="121.0" />
+      <ListView fx:id="listView" layoutX="423.0" layoutY="91.0" prefHeight="53.0" prefWidth="142.0" />
       <Label layoutX="318.0" layoutY="204.0" prefHeight="39.0" prefWidth="173.0" text="Personal Rating:" textFill="WHITE">
          <font>
             <Font size="23.0" />
