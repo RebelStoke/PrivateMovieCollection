@@ -9,22 +9,22 @@
 <AnchorPane id="AnchorPane" prefHeight="630.0" prefWidth="912.0" style="-fx-background-color: #0e1e31;" stylesheets="@../../css/privatemoviecollection.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="privatemoviecollection.gui.Controller.MediaPlayerController">
    <children>
       <MediaView fx:id="mediaView" fitHeight="512.0" fitWidth="912.0" />
-      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="368.0" layoutY="537.0">
+      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="368.0" layoutY="537.0" onMouseClicked="#continueButton">
          <image>
             <Image url="@../../assets/play-button-black.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="455.0" layoutY="537.0">
+      <ImageView fitHeight="70.0" fitWidth="69.0" layoutX="455.0" layoutY="537.0" onMouseClicked="#pauseButton">
          <image>
             <Image url="@../../assets/pause-button-black.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="52.0" fitWidth="51.0" layoutX="291.0" layoutY="546.0">
+      <ImageView fitHeight="52.0" fitWidth="51.0" layoutX="291.0" layoutY="546.0" onMouseClicked="#previousButton">
          <image>
             <Image url="@../../assets/previous-button-black.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="52.0" fitWidth="51.0" layoutX="551.0" layoutY="546.0">
+      <ImageView fitHeight="52.0" fitWidth="51.0" layoutX="551.0" layoutY="546.0" onMouseClicked="#nextButton">
          <image>
             <Image url="@../../assets/next-button-black.png" />
          </image>
