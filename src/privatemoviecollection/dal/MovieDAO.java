@@ -58,8 +58,10 @@ public class MovieDAO {
                 float personalrating = rs.getFloat("personalrating");
                 String filelink = rs.getString("filelink");
                 int id = rs.getInt("id");
+                Date date = rs.getDate("lastview");
                 listCategories = cdao.getCategoryByID(id);
                 Movie movie = new Movie(name, rating, personalrating, filelink,id);
+                movie.setLastview(date);
                 for (Category listCategory : listCategories) {
                     movie.addCategory(listCategory);
                 }

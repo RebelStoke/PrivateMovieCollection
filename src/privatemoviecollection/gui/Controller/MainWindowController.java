@@ -45,8 +45,7 @@ import privatemoviecollection.gui.Model.PMCModel;
  *
  * @author Revy
  */
-public class MainWindowController implements Initializable
-{
+public class MainWindowController implements Initializable {
 
     @FXML
     private Button add;
@@ -72,16 +71,13 @@ public class MainWindowController implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Remember to Delete outdated AND badly rated movies From the Database for an up-to-date Database!", ButtonType.OK);
         alert.showAndWait();
-        try
-        {
+        try {
             model = PMCModel.getInstance();
-        } catch (ModelException ex)
-        {
+        } catch (ModelException ex) {
             newAlert(ex);
         }
 //        try
@@ -110,8 +106,7 @@ public class MainWindowController implements Initializable
     }
 
     @FXML
-    private void addMovieMethod(ActionEvent event)
-    {
+    private void addMovieMethod(ActionEvent event) {
         Movie m = null;
         model.setSelectedMovie(m);
         model.setEdit(false);
@@ -119,65 +114,52 @@ public class MainWindowController implements Initializable
     }
 
     @FXML
-    private void exitButtonMethod(ActionEvent event)
-    {
-        try
-        {
+    private void exitButtonMethod(ActionEvent event) {
+        try {
             model.saveMoviesInDatabase();
             System.exit(1);
-        } catch (ModelException ex)
-        {
+        } catch (ModelException ex) {
             newAlert(ex);
         }
 
     }
 
     @FXML
-    private void minimizeButtonMethod(ActionEvent event)
-    {
+    private void minimizeButtonMethod(ActionEvent event) {
     }
 
     @FXML
-    private void deleteMovieMethod(ActionEvent event)
-    {
+    private void deleteMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
         setSongsTable(model.getMovies());
     }
 
     @FXML
-    private void editMovieMethod(ActionEvent event)
-    {
+    private void editMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         if (m != null) {
-        model.setSelectedMovie(m);
-        model.setEdit(true);
-        openWindow();
-        } else
-        {
+            model.setSelectedMovie(m);
+            model.setEdit(true);
+            openWindow();
+        } else {
             newAlert(new Exception("Please select a movie!"));
         }
     }
 
     @FXML
-    private void playMedia(MouseEvent event)
-    {
-        if (tableOfMovies.getSelectionModel().getSelectedItem() != null)
-        {
-        play();
-        } else
-        {
+    private void playMedia(MouseEvent event) {
+        if (tableOfMovies.getSelectionModel().getSelectedItem() != null) {
+            play();
+        } else {
             newAlert(new Exception("Please select a movie!"));
         }
     }
 
     @FXML
-    private void doubleClick(MouseEvent event)
-    {
-        if (event.getClickCount() == 2 && tableOfMovies.getSelectionModel().getSelectedItem() != null)
-        {
-            try
-            {
+    private void doubleClick(MouseEvent event) {
+        if (event.getClickCount() == 2 && tableOfMovies.getSelectionModel().getSelectedItem() != null) {
+            try {
                 Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
 //            model.setSelectedMovie(movie);
 //            String path = "/privatemoviecollection/gui/View/movieDetails.fxml";
@@ -185,17 +167,19 @@ public class MainWindowController implements Initializable
                 ObservableList<Category> categories = movie.getCategories();
                 String title = movie.getName();
                 String rating = Float.toString(movie.getRating());
+                String personalrating = Float.toString(movie.getRating());
+                String lastview = checkLastView(movie.getLastview() + "");
+                System.out.println(lastview.length());
                 Parent root3;
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/movieDetails.fxml"));
                 root3 = (Parent) fxmlLoader.load();
                 fxmlLoader.<MovieDetailsController>getController().setController(this);
-                fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating);
+                fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating, personalrating, lastview);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root3));
                 stage.centerOnScreen();
                 stage.show();
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
                 newAlert(ex);
             }
@@ -204,36 +188,39 @@ public class MainWindowController implements Initializable
 
     }
 
-    public void play()
-    {
+    public String checkLastView(String s) {
+        if (s.equals("null")) {
+            return "Never opened";
+        } else {
+            return s;
+        }
+    }
 
-        try
-        {
+    public void play() {
+
+        try {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
-            if(movie.getFilelink().contains(".mp4")||movie.getFilelink().contains(".mpeg4")){
-            hideStage();    
-            Parent root2;
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
-            root2 = (Parent) fxmlLoader.load();
-            fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
-            Stage stage = new Stage();
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.setScene(new Scene(root2));
-            stage.centerOnScreen();
-            stage.show();
+            if (movie.getFilelink().contains(".mp4") || movie.getFilelink().contains(".mpeg4")) {
+                hideStage();
+                Parent root2;
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
+                root2 = (Parent) fxmlLoader.load();
+                fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
+                Stage stage = new Stage();
+                stage.initStyle(StageStyle.UNDECORATED);
+                stage.setScene(new Scene(root2));
+                stage.centerOnScreen();
+                stage.show();
             }
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
             newAlert(ex);
         }
 
     }
 
-    private void openWindow()
-    {
-        try
-        {
+    private void openWindow() {
+        try {
             Parent root3;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/addMovie.fxml"));
             root3 = (Parent) fxmlLoader.load();
@@ -242,47 +229,45 @@ public class MainWindowController implements Initializable
             stage.setScene(new Scene(root3));
             stage.centerOnScreen();
             stage.show();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
             newAlert(ex);
         }
     }
 
-    private void newAlert(Exception ex)
-    {
+    private void newAlert(Exception ex) {
         Alert a = new Alert(Alert.AlertType.ERROR, "Error: " + ex.getMessage(), ButtonType.OK);
         a.show();
     }
-    
-    public void search(){
-    String txt = searchField.getText();
-    txt = txt.toLowerCase();
-    List<Movie> list1 = model.getMovies();
-    List<Movie> list2 = new ArrayList<Movie>();
+
+    public void search() {
+        String txt = searchField.getText();
+        txt = txt.toLowerCase();
+        List<Movie> list1 = model.getMovies();
+        List<Movie> list2 = new ArrayList<Movie>();
         for (Movie movie : list1) {
-            if(movie.getName().toLowerCase().contains(txt)||movie.getCategoriesAsString().toLowerCase().contains(txt)){
+            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt)) {
                 list2.add(movie);
-            }       
+            }
         }
-     moviesAsObservable = FXCollections.observableArrayList(list2);  
-     setSongsTable(list2);
+        moviesAsObservable = FXCollections.observableArrayList(list2);
+        setSongsTable(list2);
     }
-    
+
     @FXML
     private void enterSearch(KeyEvent event) // executes search method by clicking enter
     {
-        if (event.getCode() == KeyCode.ENTER && searchField.isFocused())
-        {
+        if (event.getCode() == KeyCode.ENTER && searchField.isFocused()) {
             search();
         }
     }
-    
-    public void showStage(){
+
+    public void showStage() {
         Stage stage = (Stage) add.getScene().getWindow();
         stage.show();
     }
-    public void hideStage(){
+
+    public void hideStage() {
         Stage stage = (Stage) add.getScene().getWindow();
         stage.hide();
     }

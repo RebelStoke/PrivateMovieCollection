@@ -41,6 +41,10 @@ MainWindowController mwController;
     
     private PMCModel model;
     private Parent root1;
+    @FXML
+    private Label personalRating;
+    @FXML
+    private Label lastView;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -54,11 +58,12 @@ MainWindowController mwController;
         this.mwController = controller;
         
 }
-    public void passInfo(String title, ObservableList category, String rating){
+    public void passInfo(String title, ObservableList category, String rating, String personalratig, String lastview){
         this.title.setText(title);
         listView.getItems().addAll(category);
         this.rating.setText(rating);
-        
+        this.personalRating.setText(personalratig);
+        this.lastView.setText(lastview);
     
     }
 
