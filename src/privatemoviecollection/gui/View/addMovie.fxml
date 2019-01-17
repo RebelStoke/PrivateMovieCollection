@@ -24,8 +24,8 @@
          </font></Button>
       <TextField fx:id="nameField" layoutX="211.0" layoutY="76.0" />
       <TextField fx:id="pathField" layoutX="213.0" layoutY="127.0" />
-      <TextField fx:id="ratingField" onKeyTyped="#textRating" layoutX="213.0" layoutY="177.0" />
-      <TextField fx:id="personalField" onKeyTyped="#textPersonalRating" layoutX="213.0" layoutY="224.0" />
+      <TextField fx:id="ratingField" layoutX="213.0" layoutY="177.0" />
+      <TextField fx:id="personalField" layoutX="213.0" layoutY="224.0" />
       <Button layoutX="433.0" layoutY="125.0" mnemonicParsing="false" onAction="#clickToPickFile" text="Choose" />
       <Label layoutX="83.0" layoutY="279.0" text="Categories:" textFill="WHITE" />
       <CheckComboBox fx:id="categoryBox" layoutX="213.0" layoutY="274.0" prefHeight="31.0" prefWidth="187.0" />
