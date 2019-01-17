@@ -7,8 +7,6 @@ package privatemoviecollection.gui.Controller;
 
 import java.io.File;
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,40 +43,32 @@ public class MediaPlayerController implements Initializable {
     private Media hit;
     @FXML
     private MediaView mediaView;
-<<<<<<< HEAD
     @FXML
     private Label actualDuration;
     @FXML
     private Label movieDuration;
     private Stage stage;
     
-=======
-
->>>>>>> 9fea42c6eda07f673c53bd1687f051202779aefd
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
+        try
+        {
             model = PMCModel.getInstance();
-        } catch (ModelException ex) {
+        } catch (ModelException ex)
+        {
             newAlert(ex);
         }
-        movie = model.getSelectedMovie();
+       movie = model.getSelectedMovie();
     }
 
-<<<<<<< HEAD
 private void setMusicPlayer()
     {
-=======
-    private void setMusicPlayer() {
-
->>>>>>> 9fea42c6eda07f673c53bd1687f051202779aefd
         String moviePath = movie.getFilelink();
         moviePath = moviePath.replace("\\", "\\\\");
         hit = new Media(new File(moviePath).toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
-<<<<<<< HEAD
         
         mediaPlayer.setOnReady(new Runnable() {
         @Override
@@ -109,33 +99,23 @@ void setController(MainWindowController controller, Movie movie){
         setMusicPlayer();
         
 }
-=======
-        mediaPlayer.play();
-        Date date = Date.valueOf(LocalDate.now());
-        movie.setLastview(date);
-    }
-
-    void setController(MainWindowController controller, Movie movie) {
-        this.mwController = controller;
-        this.movie = movie;
-        setMusicPlayer();
-    }
->>>>>>> 9fea42c6eda07f673c53bd1687f051202779aefd
 
     @FXML
     private void exitButton(ActionEvent event) {
         mediaPlayer.stop();
         mwController.showStage();
-        ((Node) (event.getSource())).getScene().getWindow().hide();
-
+       ((Node) (event.getSource())).getScene().getWindow().hide();
+        
     }
+
 
     @FXML
     private void pauseButton(MouseEvent event) {
         mediaPlayer.pause();
     }
-
-    private void newAlert(Exception ex) {
+    
+    private void newAlert(Exception ex)
+    {
         Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
         a.show();
     }
@@ -147,22 +127,18 @@ void setController(MainWindowController controller, Movie movie){
 
     @FXML
     private void previousButton(MouseEvent event) {
-        if (model.getMovies().indexOf(movie) - 1 >= 0) {
-            int i = model.getMovies().indexOf(movie);
-            movie = (Movie) model.getMovies().get(i - 1);
-            setMusicPlayer();
-        }
+        int i = model.getMovies().indexOf(movie);
+        movie = (Movie) model.getMovies().get(i-1);
+        setMusicPlayer();
     }
 
     @FXML
     private void nextButton(MouseEvent event) {
-        if (model.getMovies().indexOf(movie) + 1 <= model.getMovies().lastIndexOf(movie)) {
-            int i = model.getMovies().indexOf(movie);
-            movie = (Movie) model.getMovies().get(i + 1);
-            setMusicPlayer();
-        }
+        int i = model.getMovies().indexOf(movie);
+        movie = (Movie) model.getMovies().get(i+1);
+        setMusicPlayer();
+        
     }
-<<<<<<< HEAD
      private class progressUpdate implements Runnable {
 
         @Override
@@ -193,7 +169,4 @@ void setController(MainWindowController controller, Movie movie){
         }
     }
     
-=======
-
->>>>>>> 9fea42c6eda07f673c53bd1687f051202779aefd
 }
