@@ -32,3 +32,14 @@
     -fx-background-color: #0e1e31;
     
 }
+.progress-bar .bar { 
+    -fx-padding: 1px; 
+    -fx-background-insets: 0; 
+    -fx-accent: white;
+}
+
+.progress-bar > .track {
+  -fx-text-box-border: white;
+  -fx-control-inner-background: #171717;
+  -fx-background-radius: 0,0,0,0;
+}

@@ -10,17 +10,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.ModelException;
 import privatemoviecollection.gui.Model.PMCModel;
@@ -39,6 +43,11 @@ public class MediaPlayerController implements Initializable {
     private Media hit;
     @FXML
     private MediaView mediaView;
+    @FXML
+    private Label actualDuration;
+    @FXML
+    private Label movieDuration;
+    private Stage stage;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -52,23 +61,43 @@ public class MediaPlayerController implements Initializable {
        movie = model.getSelectedMovie();
     }
 
-private void setMusicPlayer() 
+private void setMusicPlayer()
     {
-        
         String moviePath = movie.getFilelink();
         moviePath = moviePath.replace("\\", "\\\\");
-        System.out.println(moviePath);
         hit = new Media(new File(moviePath).toURI().toString());
         mediaPlayer = new MediaPlayer(hit);
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
-        mediaPlayer.play();
-       
+        
+        mediaPlayer.setOnReady(new Runnable() {
+        @Override
+        public void run() {
+            int i = (int)mediaPlayer.getTotalDuration().toSeconds();
+            String txt = "";
+                  if((i/60)<10)
+                  txt += "0"+i/60+":";
+                  else
+                  txt += i/60+":";
+                  if((i%60)<10)
+                  txt += "0"+i%60;
+                  else
+                  txt += i%60;  
+                movieDuration.setText(txt);
+                Runnable runnable = new progressUpdate();
+                Thread thread = new Thread(runnable);
+                thread.start();
+                mediaPlayer.play();
+            
+        }
+    });
     }
 void setController(MainWindowController controller, Movie movie){
+        stage = (Stage) actualDuration.getScene().getWindow();
         this.mwController = controller;
         this.movie = movie;
         setMusicPlayer();
+        
 }
 
     @FXML
@@ -109,6 +138,35 @@ void setController(MainWindowController controller, Movie movie){
         movie = (Movie) model.getMovies().get(i+1);
         setMusicPlayer();
         
+    }
+     private class progressUpdate implements Runnable {
+
+        @Override
+        public void run() {
+            while (true) {
+                Platform.runLater(()
+                        -> {
+                    
+                    int i = (int) mediaPlayer.getCurrentTime().toSeconds();
+                    String txt = "";
+                    if((i/60)<10)
+                    txt += "0"+i/60+":";
+                    else
+                    txt += i/60+":";
+                    if((i%60)<10)
+                    txt += "0"+i%60;
+                    else
+                    txt += i%60;
+                    actualDuration.setText(txt);
+                    //updateProgressBar(currentTime.toSeconds());
+                });
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MediaPlayerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
     
 }

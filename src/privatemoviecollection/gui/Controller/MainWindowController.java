@@ -126,6 +126,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void minimizeButtonMethod(ActionEvent event) {
+        Stage stage = (Stage) add.getScene().getWindow();
+        stage.setIconified(true);
     }
 
     @FXML
@@ -201,16 +203,16 @@ public class MainWindowController implements Initializable {
         try {
             Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
             if (movie.getFilelink().contains(".mp4") || movie.getFilelink().contains(".mpeg4")) {
-                hideStage();
                 Parent root2;
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/privatemoviecollection/gui/View/mediaPlayer.fxml"));
                 root2 = (Parent) fxmlLoader.load();
-                fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
                 Stage stage = new Stage();
                 stage.initStyle(StageStyle.UNDECORATED);
                 stage.setScene(new Scene(root2));
                 stage.centerOnScreen();
                 stage.show();
+                fxmlLoader.<MediaPlayerController>getController().setController(this, movie);
+                
             }
         } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
