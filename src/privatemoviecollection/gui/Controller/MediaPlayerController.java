@@ -105,7 +105,7 @@ public class MediaPlayerController implements Initializable {
     }
 
     private void newAlert(Exception ex) {
-        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
+        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex.getMessage(), ButtonType.OK);
         a.show();
     }
 
@@ -116,21 +116,26 @@ public class MediaPlayerController implements Initializable {
 
     @FXML
     private void previousButton(MouseEvent event) {
-        if(model.getMovies().indexOf(movie)-1>=0){
-        int i = model.getMovies().indexOf(movie);
+        try {
+            int i = model.getMovies().indexOf(movie);
         movie = (Movie) model.getMovies().get(i - 1);
         setMusicPlayer();
+        } catch (Exception e) {
+            newAlert(new Exception("No previous movie."));
         }
     }
 
     @FXML
     private void nextButton(MouseEvent event) {
-        if(model.getMovies().indexOf(movie)+1<=model.getMovies().lastIndexOf(movie)){
-        int i = model.getMovies().indexOf(movie);
-        movie = (Movie) model.getMovies().get(i + 1);
-        setMusicPlayer();
+        try {
+            int i = model.getMovies().indexOf(movie);
+            movie = (Movie) model.getMovies().get(i + 1);
+            setMusicPlayer();
+        } catch (Exception e) {
+            newAlert(new Exception("No more movies."));
+        }
+        
 
-    }
     }
 
     private class progressUpdate implements Runnable {
