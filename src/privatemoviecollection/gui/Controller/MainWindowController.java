@@ -247,10 +247,25 @@ public class MainWindowController implements Initializable {
         txt = txt.toLowerCase();
         List<Movie> list1 = model.getMovies();
         List<Movie> list2 = new ArrayList<Movie>();
+        if (txt.contains(","))
+        {
+            int ind = txt.indexOf(",");
+            String quo1 = txt.substring(0, ind);
+            String quo2 = txt.substring(ind + 1).trim();
+            for (Movie movie : list1)
+            {
+                if (movie.getCategoriesAsString().toLowerCase().contains(quo1) || movie.getCategoriesAsString().toLowerCase().contains(quo2))
+                {
+                    list2.add(movie);
+                }
+            }
+        } else
+        {
         for (Movie movie : list1) {
-            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt)) {
+            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt) || movie.getRating() >= Float.valueOf(txt)) {
                 list2.add(movie);
             }
+        }
         }
         moviesAsObservable = FXCollections.observableArrayList(list2);
         setSongsTable(list2);
