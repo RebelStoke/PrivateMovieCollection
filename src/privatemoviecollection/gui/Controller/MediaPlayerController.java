@@ -69,34 +69,25 @@ private void setMusicPlayer()
         mediaPlayer = new MediaPlayer(hit);
         mediaView.setMediaPlayer(mediaPlayer);
         mediaPlayer.setAutoPlay(true);
-        
+        stage.show();
+        mwController.hideStage();
         mediaPlayer.setOnReady(new Runnable() {
         @Override
         public void run() {
-            int i = (int)mediaPlayer.getTotalDuration().toSeconds();
-            String txt = "";
-                  if((i/60)<10)
-                  txt += "0"+i/60+":";
-                  else
-                  txt += i/60+":";
-                  if((i%60)<10)
-                  txt += "0"+i%60;
-                  else
-                  txt += i%60;  
-                movieDuration.setText(txt);
-                Runnable runnable = new progressUpdate();
-                Thread thread = new Thread(runnable);
-                thread.start();
+                setTime();
                 mediaPlayer.play();
+                
             
         }
     });
     }
 void setController(MainWindowController controller, Movie movie){
         stage = (Stage) actualDuration.getScene().getWindow();
+        stage.hide();
         this.mwController = controller;
         this.movie = movie;
         setMusicPlayer();
+        
         
 }
 
@@ -167,6 +158,25 @@ void setController(MainWindowController controller, Movie movie){
                 }
             }
         }
+    }
+     
+    private void setTime(){
+    int i = (int)mediaPlayer.getTotalDuration().toSeconds();
+            String txt = "";
+                  if((i/60)<10)
+                  txt += "0"+i/60+":";
+                  else
+                  txt += i/60+":";
+                  if((i%60)<10)
+                  txt += "0"+i%60;
+                  else
+                  txt += i%60;  
+                movieDuration.setText(txt);
+                 Runnable runnable = new progressUpdate();
+                Thread thread = new Thread(runnable);
+                thread.start();
+    
+    
     }
     
 }
