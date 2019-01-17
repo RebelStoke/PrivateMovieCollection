@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +21,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
@@ -50,6 +53,11 @@ public class MediaPlayerController implements Initializable {
     @FXML
     private Label movieDuration;
     private Stage stage;
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Slider movieLengthSlider;
+    private int j = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -58,6 +66,15 @@ public class MediaPlayerController implements Initializable {
         } catch (ModelException ex) {
             newAlert(ex);
         }
+        movieLengthSlider.setMin(0);
+        movieLengthSlider.setMax(1.0);
+        movieLengthSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+                -> {
+            progressBar.setProgress(newValue.doubleValue());
+                Duration duration = Duration.seconds(mediaPlayer.getTotalDuration().toSeconds() * newValue.doubleValue());
+                mediaPlayer.seek(duration);
+            
+        });
         movie = model.getSelectedMovie();
     }
 
@@ -159,7 +176,7 @@ public class MediaPlayerController implements Initializable {
                         txt += i % 60;
                     }
                     actualDuration.setText(txt);
-                    //updateProgressBar(currentTime.toSeconds());
+                    progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds()/mediaPlayer.getTotalDuration().toSeconds());
                 });
                 try {
                     Thread.sleep(100);
@@ -171,17 +188,17 @@ public class MediaPlayerController implements Initializable {
     }
 
     private void setTime() {
-        int i = (int) mediaPlayer.getTotalDuration().toSeconds();
+        j = (int) mediaPlayer.getTotalDuration().toSeconds();
         String txt = "";
-        if ((i / 60) < 10) {
-            txt += "0" + i / 60 + ":";
+        if ((j / 60) < 10) {
+            txt += "0" + j / 60 + ":";
         } else {
-            txt += i / 60 + ":";
+            txt += j / 60 + ":";
         }
-        if ((i % 60) < 10) {
-            txt += "0" + i % 60;
+        if ((j % 60) < 10) {
+            txt += "0" + j % 60;
         } else {
-            txt += i % 60;
+            txt += j % 60;
         }
         movieDuration.setText(txt);
         Runnable runnable = new progressUpdate();
