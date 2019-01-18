@@ -1,7 +1,5 @@
 package privatemoviecollection.dal;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
-import privatemoviecollection.be.Movie;
 
 
 

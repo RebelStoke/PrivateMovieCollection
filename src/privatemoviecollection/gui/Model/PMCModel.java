@@ -2,8 +2,6 @@ package privatemoviecollection.gui.Model;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,10 +129,8 @@ public class PMCModel {
     public void openWindow(String path, Parent root1) // opens up a window and sets the connection
     {
         try {
-//            Parent root1;
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
             root1 = (Parent) fxmlLoader.load();
-//            fxmlLoader.<AddMovieController>getController().setController(this);
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
             stage.centerOnScreen();

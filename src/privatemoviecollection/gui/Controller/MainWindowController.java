@@ -80,19 +80,11 @@ public class MainWindowController implements Initializable {
         } catch (ModelException ex) {
             newAlert(ex);
         }
-//        try
-//        {
-//            String name = "";
-//            Desktop.getDesktop().open(new File(name));
-//        } catch (IOException ex)
-//        {
-//            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        setSongsTable(model.getMovies());
+        setMoviesTable(model.getMovies());
 
     }
 
-    public void setSongsTable(List<Movie> list) // This method gets all songs from database and loeads it into tableSongs
+    public void setMoviesTable(List<Movie> list) // This method gets all songs from database and loeads it into tableSongs
     {
         moviesAsObservable = FXCollections.observableArrayList(list);
 
@@ -135,7 +127,7 @@ public class MainWindowController implements Initializable {
     private void deleteMovieMethod(ActionEvent event) {
         Movie m = tableOfMovies.getSelectionModel().getSelectedItem();
         model.removeMovie(m);
-        setSongsTable(model.getMovies());
+        setMoviesTable(model.getMovies());
     }
 
     @FXML
@@ -270,7 +262,8 @@ public class MainWindowController implements Initializable {
         }
         }
         moviesAsObservable = FXCollections.observableArrayList(list2);
-        setSongsTable(list2);
+        setMoviesTable
+        (list2);
     }
 
     @FXML

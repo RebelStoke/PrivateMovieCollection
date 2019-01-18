@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package privatemoviecollection.gui.Controller;
 
 import java.io.File;
@@ -23,7 +18,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -71,9 +65,9 @@ public class MediaPlayerController implements Initializable {
         movieLengthSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
                 -> {
             progressBar.setProgress(newValue.doubleValue());
-                Duration duration = Duration.seconds(mediaPlayer.getTotalDuration().toSeconds() * newValue.doubleValue());
-                mediaPlayer.seek(duration);
-            
+            Duration duration = Duration.seconds(mediaPlayer.getTotalDuration().toSeconds() * newValue.doubleValue());
+            mediaPlayer.seek(duration);
+
         });
         movie = model.getSelectedMovie();
     }
@@ -135,8 +129,8 @@ public class MediaPlayerController implements Initializable {
     private void previousButton(MouseEvent event) {
         try {
             int i = model.getMovies().indexOf(movie);
-        movie = (Movie) model.getMovies().get(i - 1);
-        setMusicPlayer();
+            movie = (Movie) model.getMovies().get(i - 1);
+            setMusicPlayer();
         } catch (Exception e) {
             newAlert(new Exception("No previous movie."));
         }
@@ -151,7 +145,6 @@ public class MediaPlayerController implements Initializable {
         } catch (Exception e) {
             newAlert(new Exception("No more movies."));
         }
-        
 
     }
 
@@ -176,7 +169,7 @@ public class MediaPlayerController implements Initializable {
                         txt += i % 60;
                     }
                     actualDuration.setText(txt);
-                    progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds()/mediaPlayer.getTotalDuration().toSeconds());
+                    progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
                 });
                 try {
                     Thread.sleep(100);
