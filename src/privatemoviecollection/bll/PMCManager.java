@@ -1,75 +1,62 @@
 package privatemoviecollection.bll;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.dal.CategoryDAO;
+import privatemoviecollection.dal.DALException;
 import privatemoviecollection.dal.MovieDAO;
 
 public final class PMCManager implements PMCLogicFacade {
 
     private final MovieDAO mdao;
-    private final CategoryDAO cdao;
+    private CategoryDAO cdao;
     private List<Movie> movies;
     private List<Category> categories;
 
-    public PMCManager() throws IOException, SQLException {
+    public PMCManager() throws IOException, DALException {
         mdao = new MovieDAO();
-        cdao = new CategoryDAO();
-        setMovies(mdao.getAllMoviesFromDatabase());
-        setCategories(cdao.getAllCategoriesFromDatabase());
+        cdao = cdao.getInstance();
+        cdao.getAllCategoriesFromDatabase();
+        setCategories(cdao.getCategories());
+        mdao.getAllMoviesFromDatabase();
+        setMovies(mdao.getMovies());
+        
 
     }
 
     @Override
-    public void addMovie(String name, float rating, String path, float personalPath, int id) {
+    public Movie addMovie(String name, float rating, String path, float personalPath, int id) {
         Movie movie = new Movie(name, rating, personalPath, path,id);
-        try {
-            mdao.addMovie(movie);
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return mdao.addMovie(movie);
     }
 
     @Override
     public void removeMovie(Movie movie) {
-        try {
-            mdao.removeMovie(movie);
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mdao.removeMovie(movie);
     }
 
     @Override
-    public List getAllMoviesFromDatabase() {
-        try {
+    public List<Movie> getAllMoviesFromDatabase() throws BLLException {
+        try
+        {
             mdao.getAllMoviesFromDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
         return null;
     }
 
     @Override
-    public void addCategory(Category category) {
-        categories.add(category);
-    }
-
-    @Override
-    public void removeCategory(Category category) {
-        categories.remove(category);
-    }
-
-    @Override
-    public List getAllCategoriesFromDatabase() {
-        try {
+    public List<Category> getAllCategoriesFromDatabase() throws BLLException {
+        try
+        {
             cdao.getAllCategoriesFromDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
         return null;
     }
@@ -77,19 +64,6 @@ public final class PMCManager implements PMCLogicFacade {
     @Override
     public void setCategory(Movie movie, Category category) {
         movie.addCategory(category);
-    }
-
-    @Override
-    public Movie searchMovie(String quote) {
-        Movie movie = null;
-        for (Movie movy : movies) {
-            if (movy.getName().contains(quote)) {
-                movie = movy;
-            } else if (movy.hasCategory(quote)) {
-                movie = movy;
-            }
-        }
-        return movie;
     }
 
     @Override
@@ -110,7 +84,7 @@ public final class PMCManager implements PMCLogicFacade {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
-
+    @Override
     public List<Category> getCategories() {
         return categories;
     }
@@ -120,22 +94,18 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public void saveMoviesInDatabase() {
-        try {
+    public void saveMoviesInDatabase() throws BLLException {
+        try
+        {
             mdao.saveMoviesInDatabase();
-        } catch (SQLException ex) {
-            Logger.getLogger(PMCManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DALException ex)
+        {
+            throw new BLLException(ex);
         }
     }
     @Override
     public int getHighestIDofMovies(){
     return mdao.getHighestIDofMovies();
     }
-
-    @Override
-    public void editMovie(Movie movie)
-    {
-    }
-
 
 }

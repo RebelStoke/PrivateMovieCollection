@@ -1,18 +1,14 @@
 package privatemoviecollection.dal;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
@@ -21,20 +17,21 @@ public class MovieDAO {
 
     List<Movie> listMovies;
     private final ConnectionProvider cp;
-    private final CategoryDAO cdao;
+    private CategoryDAO cdao;
+    
     public MovieDAO() throws IOException {
         listMovies = new ArrayList<>();
         cp = new ConnectionProvider();
-        cdao = new CategoryDAO();
+        cdao = cdao.getInstance();
     }
 
-    public Movie addMovie(Movie movie) throws SQLException {
+    public Movie addMovie(Movie movie) {
         System.out.println(movie);
         listMovies.add(movie);
         return movie;
     }
 
-    public void removeMovie(Movie movie) throws SQLException {
+    public void removeMovie(Movie movie) {
         listMovies.remove(movie);
     }
 
@@ -46,7 +43,7 @@ public class MovieDAO {
         return listMovies.get(ArraySize-1).getId()+1;
     }
 
-    public List getAllMoviesFromDatabase() throws SQLException {
+    public void getAllMoviesFromDatabase() throws DALException {
         List<Category> listCategories = new ArrayList<>();
         try (Connection con = cp.getConnection()) {
             Statement statement = con.createStatement();
@@ -57,18 +54,28 @@ public class MovieDAO {
                 float personalrating = rs.getFloat("personalrating");
                 String filelink = rs.getString("filelink");
                 int id = rs.getInt("id");
+                Date date = rs.getDate("lastview");
                 listCategories = cdao.getCategoryByID(id);
                 Movie movie = new Movie(name, rating, personalrating, filelink,id);
+                movie.setLastview(date);
                 for (Category listCategory : listCategories) {
                     movie.addCategory(listCategory);
                 }
                 listMovies.add(movie);
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
-       return listMovies;
+    }
+    
+    public List<Movie> getMovies(){
+    
+        return listMovies;
+        
     }
 
-    public void saveMoviesInDatabase() throws SQLException {
+    public void saveMoviesInDatabase() throws DALException {
         int ArraySize = listMovies.size();
         int actualMovieIDinDB=-1;
         try (Connection con = cp.getConnection()) {
@@ -85,7 +92,7 @@ public class MovieDAO {
                 ppst.setFloat(2, actualMovie.getRating());
                 ppst.setFloat(3, actualMovie.getPersonalrating());
                 ppst.setString(4, actualMovie.getFilelink());
-                ppst.setInt(5, actualMovie.getLastview());
+                ppst.setDate(5,  actualMovie.getLastview());
                 ppst.execute();
                 
                 String sql3 = "SELECT * FROM Movies WHERE name=?";
@@ -109,6 +116,9 @@ public class MovieDAO {
                 ppst2.execute();
                 }
             }
+        } catch (SQLException ex)
+        {
+            throw new DALException(ex);
         }
 
     }

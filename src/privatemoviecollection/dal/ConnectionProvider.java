@@ -33,8 +33,14 @@ public class ConnectionProvider
         ds.setPassword(databaseProperties.getProperty("Password"));
     }
 
-    public Connection getConnection() throws SQLServerException
+    public Connection getConnection() throws DALException
     {
-        return ds.getConnection();
+        try
+        {
+            return ds.getConnection();
+        } catch (SQLServerException ex)
+        {
+            throw new DALException(ex);
+        }
     }
 }

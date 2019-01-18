@@ -1,5 +1,7 @@
 package privatemoviecollection.be;
 
+
+import java.sql.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +11,7 @@ public class Movie
     private String categoriesAsString = "";
     private float rating;
     private String filelink;
-    private int lastview;
+    private Date lastview;
     private float personalrating;
     private int id;
     private ObservableList<Category> categories = FXCollections.observableArrayList();
@@ -53,12 +55,12 @@ public class Movie
         this.filelink = filelink;
     }
 
-    public int getLastview()
+    public Date getLastview()
     {
         return lastview;
     }
 
-    public void setLastview(int lastview)
+    public void setLastview(Date lastview)
     {
         this.lastview = lastview;
     }
@@ -98,6 +100,16 @@ public class Movie
     public ObservableList<Category> getCategories()
     {
         return categories;
+    }
+    
+    public void setCategories(ObservableList<Category> cat){
+    
+        this.categories = cat;
+        
+        for (Category category : categories) {
+            this.categoriesAsString += category.getName()+"|";
+        }
+        
     }
     
     
