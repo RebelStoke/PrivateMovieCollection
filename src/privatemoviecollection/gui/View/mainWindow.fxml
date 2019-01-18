@@ -38,7 +38,7 @@
       </VBox>
       <VBox layoutY="510.0" prefHeight="90.0" prefWidth="919.0" style="-fx-border-color: white; -fx-border-width: 3 0 0 0;">
          <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="921.0">
                <children>
                   <Button fx:id="add" layoutX="43.0" layoutY="21.0" mnemonicParsing="false" onAction="#addMovieMethod" prefHeight="42.0" prefWidth="68.0" text="Add">
                      <font>

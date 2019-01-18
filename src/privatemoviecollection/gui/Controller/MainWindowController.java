@@ -99,7 +99,8 @@ public class MainWindowController implements Initializable {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoriesAsString"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-
+        ratingCol.getStyleClass().add("column-without-left-border");
+        ratingCol.getStyleClass().add("time-col");
         tableOfMovies.getColumns().clear();
         tableOfMovies.setItems(moviesAsObservable);
         tableOfMovies.getColumns().addAll(titleCol, categoryCol, ratingCol);
@@ -178,6 +179,7 @@ public class MainWindowController implements Initializable {
                 fxmlLoader.<MovieDetailsController>getController().setController(this);
                 fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating, personalrating, lastview);
                 Stage stage = new Stage();
+                stage.initStyle(StageStyle.UNDECORATED);
                 stage.setScene(new Scene(root3));
                 stage.centerOnScreen();
                 stage.show();

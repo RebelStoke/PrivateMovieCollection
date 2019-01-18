@@ -117,7 +117,7 @@ public class AddMovieController implements Initializable {
                 titleCorrect=false;
         }
         
-        if(titleCorrect && rating<10.0 && personalRating<10.0)
+        if(titleCorrect && rating<=10.0 && personalRating<=10.0)
             isMovieCorrect=true;
         else
             isMovieCorrect=false;
