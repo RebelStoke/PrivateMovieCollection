@@ -22,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import org.controlsfx.control.CheckComboBox;
@@ -40,17 +41,17 @@ public class AddMovieController implements Initializable {
     @FXML
     private TextField nameField;
     @FXML
-    private TextField ratingField;
-    @FXML
     private TextField pathField;
-    @FXML
-    private TextField personalField;
     private PMCModel model;
     private Movie selectedMovie;
     private MainWindowController mwController;
     private ObservableList<Category> categories;
     @FXML
     private CheckComboBox<Category> categoryBox;
+    @FXML
+    private Slider ratingSlider;
+    @FXML
+    private Slider personalSlider;
     /**
      * Initializes the controller class.
      */
@@ -66,9 +67,11 @@ public class AddMovieController implements Initializable {
             {
                 selectedMovie = model.getSelectedMovie();
                 nameField.setText(selectedMovie.getName());
-                ratingField.setText(String.valueOf(selectedMovie.getRating()));
+                ratingSlider.adjustValue(selectedMovie.getRating());
+                //ratingField.setText(String.valueOf(selectedMovie.getRating()));
                 pathField.setText(selectedMovie.getFilelink());
-                personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
+                personalSlider.adjustValue(selectedMovie.getPersonalrating());
+                //personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
                 ObservableList<Category> ob = selectedMovie.getCategories();
                 for (Category object : ob) {
                     categoryBox.getCheckModel().check(object);
@@ -103,10 +106,10 @@ public class AddMovieController implements Initializable {
         allMovies=model.getMovies();
         String name = nameField.getText();
         float rating =0;
-        rating = Float.parseFloat(ratingField.getText());
+        rating = (float)ratingSlider.getValue();
         String path = pathField.getText();
         float personalRating=0;
-        personalRating = Float.valueOf(personalField.getText());
+        personalRating = (float)personalSlider.getValue();
         int id = model.getHighestIDofMovies();
         
         for (Movie movie : allMovies) {

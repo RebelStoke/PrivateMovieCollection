@@ -168,8 +168,8 @@ public class MainWindowController implements Initializable {
 //            model.openWindow(path, root1);
                 ObservableList<Category> categories = movie.getCategories();
                 String title = movie.getName();
-                String rating = Float.toString(movie.getRating());
-                String personalrating = Float.toString(movie.getRating());
+                float rating = movie.getRating();
+                float personalrating = movie.getPersonalrating();
                 String lastview = checkLastView(movie.getLastview() + "");
                 System.out.println(lastview.length());
                 Parent root3;
