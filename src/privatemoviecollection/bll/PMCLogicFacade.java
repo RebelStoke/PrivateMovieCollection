@@ -12,9 +12,15 @@ public interface PMCLogicFacade
     
     public List getAllMoviesFromDatabase() throws BLLException;
     
+    public void addCategory(Category category);
+    
+    public void removeCategory(Category category);
+    
     public List getAllCategoriesFromDatabase() throws BLLException;
     
     public void setCategory(Movie movie, Category category);
+    
+    public Movie searchMovie(String quote);
     
     public void addPersonalRating(float personalRating, Movie movie);
     
@@ -27,4 +33,6 @@ public interface PMCLogicFacade
     public List getCategories();
     
     public int getHighestIDofMovies();
+    
+    public void editMovie(Movie movie);
 }

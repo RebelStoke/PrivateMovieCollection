@@ -1,7 +1,10 @@
 package privatemoviecollection.bll;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.dal.CategoryDAO;
@@ -38,7 +41,7 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public List<Movie> getAllMoviesFromDatabase() throws BLLException {
+    public List getAllMoviesFromDatabase() throws BLLException {
         try
         {
             mdao.getAllMoviesFromDatabase();
@@ -50,7 +53,17 @@ public final class PMCManager implements PMCLogicFacade {
     }
 
     @Override
-    public List<Category> getAllCategoriesFromDatabase() throws BLLException {
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+
+    @Override
+    public void removeCategory(Category category) {
+        categories.remove(category);
+    }
+
+    @Override
+    public List getAllCategoriesFromDatabase() throws BLLException {
         try
         {
             cdao.getAllCategoriesFromDatabase();
@@ -64,6 +77,19 @@ public final class PMCManager implements PMCLogicFacade {
     @Override
     public void setCategory(Movie movie, Category category) {
         movie.addCategory(category);
+    }
+
+    @Override
+    public Movie searchMovie(String quote) {
+        Movie movie = null;
+        for (Movie movy : movies) {
+            if (movy.getName().contains(quote)) {
+                movie = movy;
+            } else if (movy.hasCategory(quote)) {
+                movie = movy;
+            }
+        }
+        return movie;
     }
 
     @Override
@@ -107,5 +133,12 @@ public final class PMCManager implements PMCLogicFacade {
     public int getHighestIDofMovies(){
     return mdao.getHighestIDofMovies();
     }
+    
+    @Override
+    public void editMovie(Movie movie)
+    {
+        
+    }
+
 
 }

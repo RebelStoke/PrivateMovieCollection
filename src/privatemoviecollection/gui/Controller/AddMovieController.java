@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javax.swing.JFrame;
 import org.controlsfx.control.CheckComboBox;
@@ -26,117 +27,99 @@ import privatemoviecollection.gui.Model.PMCModel;
  *
  * @author Revy
  */
-public class AddMovieController implements Initializable
-{
+public class AddMovieController implements Initializable {
 
     @FXML
     private TextField nameField;
     @FXML
-    private TextField ratingField;
-    @FXML
     private TextField pathField;
-    @FXML
-    private TextField personalField;
     private PMCModel model;
     private Movie selectedMovie;
     private MainWindowController mwController;
     private ObservableList<Category> categories;
     @FXML
     private CheckComboBox<Category> categoryBox;
+    @FXML
+    private Slider ratingSlider;
+    @FXML
+    private Slider personalSlider;
 
+    /**
+     * Initializes the controller class.
+     */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        try
-        {
+    public void initialize(URL url, ResourceBundle rb) {
+        try {
             model = PMCModel.getInstance();
             mwController = new MainWindowController();
             categories = FXCollections.observableArrayList(model.getCategories());
             categoryBox.getItems().addAll(categories);
-            if (model.getSelectedMovie() != null)
-            {
+            if (model.getSelectedMovie() != null) {
                 selectedMovie = model.getSelectedMovie();
                 nameField.setText(selectedMovie.getName());
-                ratingField.setText(String.valueOf(selectedMovie.getRating()));
+                ratingSlider.adjustValue(selectedMovie.getRating());
                 pathField.setText(selectedMovie.getFilelink());
-                personalField.setText(String.valueOf(selectedMovie.getPersonalrating()));
+                personalSlider.adjustValue(selectedMovie.getPersonalrating());
                 ObservableList<Category> ob = selectedMovie.getCategories();
-                for (Category object : ob)
-                {
+                for (Category object : ob) {
                     categoryBox.getCheckModel().check(object);
                 }
                 model.removeMovie(selectedMovie);
             }
-        } catch (ModelException ex)
-        {
+        } catch (ModelException ex) {
             newAlert(ex);
         }
     }
 
     @FXML
-    private void clickToPickFile(ActionEvent event)
-    {
+    private void clickToPickFile(ActionEvent event) {
         FileDialog fd = new FileDialog(new JFrame());
         fd.setVisible(true);
-        if (fd.getFile() != null)
-        {
+        if (fd.getFile() != null) {
             File[] f = fd.getFiles();
             String filePath = fd.getFiles()[0].getPath();
-            if (filePath.endsWith(".mp4") || filePath.endsWith(".mpeg4"))
-            {
+            if (filePath.toString().endsWith(".mp4") || filePath.toString().endsWith(".mpeg4")) {
                 pathField.setText(filePath);
-            } else
-            {
+            } else {
                 newAlert(new Exception("Only .mp4 or .mpeg4 files can be chosen!"));
             }
-        } else
-        {
+        } else {
             newAlert(new Exception("File not chosen!"));
         }
     }
 
     @FXML
-    private void acceptButtonMethod(ActionEvent event)
-    {
-        try
-        {
+    private void acceptButtonMethod(ActionEvent event) {
+        try {
             boolean isMovieCorrect = true;
             boolean titleCorrect = true;
             List<Movie> allMovies;
             allMovies = model.getMovies();
             String name = nameField.getText();
             float rating = 0;
-            rating = Float.parseFloat(ratingField.getText());
+            rating = (float) ratingSlider.getValue();
             String path = pathField.getText();
             float personalRating = 0;
-            personalRating = Float.valueOf(personalField.getText());
+            personalRating = (float) personalSlider.getValue();
             int id = model.getHighestIDofMovies();
 
-            for (Movie movie : allMovies)
-            {
-                if (movie.getName().equals(name))
-                {
+            for (Movie movie : allMovies) {
+                if (movie.getName().equals(name)) {
                     titleCorrect = false;
-                    newAlert(new Exception("This name is being used!"));
-                    return;
                 }
             }
 
-            if (titleCorrect && rating < 10.0 && personalRating < 10.0)
-            {
+            if (titleCorrect && rating <= 10.0 && personalRating <= 10.0) {
                 isMovieCorrect = true;
-            } else
-            {
+            } else {
                 isMovieCorrect = false;
             }
 
-            if (isMovieCorrect)
-            {
+            if (isMovieCorrect) {
                 Movie m = model.addMovie(name, rating, path, personalRating, id);
                 mwController.setMoviesTable(model.getMovies());
                 ObservableList<Category> cat = categoryBox.getCheckModel().getCheckedItems();
-                for (Category category : cat)
-                {
+                for (Category category : cat) {
                     System.out.println(category);
                 }
                 m.setCategories(cat);
@@ -145,21 +128,18 @@ public class AddMovieController implements Initializable
             titleCorrect = true;
             ((Node) (event.getSource())).getScene().getWindow().hide();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             ((Node) (event.getSource())).getScene().getWindow().hide();
         }
 
     }
 
-    public void setController(MainWindowController controller)
-    {
+    public void setController(MainWindowController controller) {
         this.mwController = controller;
     }
 
-    private void newAlert(Exception ex)
-    {
-        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex.getMessage(), ButtonType.OK);
+    private void newAlert(Exception ex) {
+        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex, ButtonType.OK);
         a.show();
     }
 

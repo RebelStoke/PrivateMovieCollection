@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package privatemoviecollection.gui.Controller;
 
 import java.io.IOException;
@@ -10,6 +15,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,11 +28,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import privatemoviecollection.be.Category;
 import privatemoviecollection.be.Movie;
 import privatemoviecollection.gui.Model.ModelException;
@@ -59,6 +67,9 @@ public class MainWindowController implements Initializable {
     @FXML
     private TextField searchField;
 
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -73,14 +84,15 @@ public class MainWindowController implements Initializable {
 
     }
 
-    public void setMoviesTable(List<Movie> list)
+    public void setMoviesTable(List<Movie> list) // This method gets all songs from database and loeads it into tableSongs
     {
         moviesAsObservable = FXCollections.observableArrayList(list);
 
         titleCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryCol.setCellValueFactory(new PropertyValueFactory<>("categoriesAsString"));
         ratingCol.setCellValueFactory(new PropertyValueFactory<>("rating"));
-
+        ratingCol.getStyleClass().add("column-without-left-border");
+        ratingCol.getStyleClass().add("time-col");
         tableOfMovies.getColumns().clear();
         tableOfMovies.setItems(moviesAsObservable);
         tableOfMovies.getColumns().addAll(titleCol, categoryCol, ratingCol);
@@ -144,10 +156,13 @@ public class MainWindowController implements Initializable {
         if (event.getClickCount() == 2 && tableOfMovies.getSelectionModel().getSelectedItem() != null) {
             try {
                 Movie movie = tableOfMovies.getSelectionModel().getSelectedItem();
+//            model.setSelectedMovie(movie);
+//            String path = "/privatemoviecollection/gui/View/movieDetails.fxml";
+//            model.openWindow(path, root1);
                 ObservableList<Category> categories = movie.getCategories();
                 String title = movie.getName();
-                String rating = Float.toString(movie.getRating());
-                String personalrating = Float.toString(movie.getRating());
+                float rating = movie.getRating();
+                float personalrating = movie.getPersonalrating();
                 String lastview = checkLastView(movie.getLastview() + "");
                 System.out.println(lastview.length());
                 Parent root3;
@@ -156,6 +171,7 @@ public class MainWindowController implements Initializable {
                 fxmlLoader.<MovieDetailsController>getController().setController(this);
                 fxmlLoader.<MovieDetailsController>getController().passInfo(title, categories, rating, personalrating, lastview);
                 Stage stage = new Stage();
+                stage.initStyle(StageStyle.UNDECORATED);
                 stage.setScene(new Scene(root3));
                 stage.centerOnScreen();
                 stage.show();
@@ -240,17 +256,18 @@ public class MainWindowController implements Initializable {
         } else
         {
         for (Movie movie : list1) {
-            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt) || String.valueOf(movie.getRating()).contains(txt)) {
+            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt) || movie.getRating() >= Float.valueOf(txt)) {
                 list2.add(movie);
             }
         }
         }
         moviesAsObservable = FXCollections.observableArrayList(list2);
-        setMoviesTable(list2);
+        setMoviesTable
+        (list2);
     }
 
     @FXML
-    private void enterSearch(KeyEvent event)
+    private void enterSearch(KeyEvent event) // executes search method by clicking enter
     {
         if (event.getCode() == KeyCode.ENTER && searchField.isFocused()) {
             search();

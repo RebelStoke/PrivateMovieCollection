@@ -65,14 +65,14 @@ public class MediaPlayerController implements Initializable {
         movieLengthSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
                 -> {
             progressBar.setProgress(newValue.doubleValue());
-                Duration duration = Duration.seconds(mediaPlayer.getTotalDuration().toSeconds() * newValue.doubleValue());
-                mediaPlayer.seek(duration);
-            
+            Duration duration = Duration.seconds(mediaPlayer.getTotalDuration().toSeconds() * newValue.doubleValue());
+            mediaPlayer.seek(duration);
+
         });
         movie = model.getSelectedMovie();
     }
 
-    private void setMediaPlayer() {
+    private void setMusicPlayer() {
         String moviePath = movie.getFilelink();
         moviePath = moviePath.replace("\\", "\\\\");
         hit = new Media(new File(moviePath).toURI().toString());
@@ -98,7 +98,7 @@ public class MediaPlayerController implements Initializable {
         stage.hide();
         this.mwController = controller;
         this.movie = movie;
-        setMediaPlayer();
+        setMusicPlayer();
 
     }
 
@@ -129,8 +129,8 @@ public class MediaPlayerController implements Initializable {
     private void previousButton(MouseEvent event) {
         try {
             int i = model.getMovies().indexOf(movie);
-        movie = (Movie) model.getMovies().get(i - 1);
-        setMediaPlayer();
+            movie = (Movie) model.getMovies().get(i - 1);
+            setMusicPlayer();
         } catch (Exception e) {
             newAlert(new Exception("No previous movie."));
         }
@@ -141,11 +141,10 @@ public class MediaPlayerController implements Initializable {
         try {
             int i = model.getMovies().indexOf(movie);
             movie = (Movie) model.getMovies().get(i + 1);
-            setMediaPlayer();
+            setMusicPlayer();
         } catch (Exception e) {
             newAlert(new Exception("No more movies."));
         }
-        
 
     }
 
@@ -170,13 +169,12 @@ public class MediaPlayerController implements Initializable {
                         txt += i % 60;
                     }
                     actualDuration.setText(txt);
-                    progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds()/mediaPlayer.getTotalDuration().toSeconds());
+                    progressBar.setProgress(mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
                 });
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MediaPlayerController.class.getName()).log(Level.SEVERE, null, ex);
-                    newAlert(ex);
                 }
             }
         }

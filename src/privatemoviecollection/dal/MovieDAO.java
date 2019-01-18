@@ -18,7 +18,6 @@ public class MovieDAO {
     List<Movie> listMovies;
     private final ConnectionProvider cp;
     private CategoryDAO cdao;
-    
     public MovieDAO() throws IOException {
         listMovies = new ArrayList<>();
         cp = new ConnectionProvider();
