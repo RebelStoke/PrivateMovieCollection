@@ -256,7 +256,7 @@ public class MainWindowController implements Initializable {
         } else
         {
         for (Movie movie : list1) {
-            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt) || movie.getRating() >= Float.valueOf(txt)) {
+            if (movie.getName().toLowerCase().contains(txt) || movie.getCategoriesAsString().toLowerCase().contains(txt) || String.valueOf(movie.getRating()).contains(txt)) {
                 list2.add(movie);
             }
         }
